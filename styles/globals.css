@@ -1,6 +1,9 @@
 :root{--accent:#0b5cff;--muted:#666}
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;margin:0;color:#111}
-.container{max-width:960px;margin:0 auto;padding:24px}
+.root{--accent:#0b5cff;--muted:#666}
+/* Brand */
+:root{--brand-green:#0f5b3f;--brand-green-dark:#0b462f;--muted:#e6efe9;--card-bg:#fff}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;margin:0;color:#111;background:#fafafa}
+.container{max-width:980px;margin:0 auto;padding:24px}
 .header{display:flex;justify-content:space-between;align-items:center;padding:12px 24px;border-bottom:1px solid #eee;background:#fff}
 .container{max-width:980px;margin:0 auto;padding:24px}
 
@@ -13,6 +16,15 @@ body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;margin:
 .small{font-size:0.9rem;color:var(--muted)}
 
 .button{background:var(--accent);color:#fff;padding:8px 12px;border-radius:6px;border:none;cursor:pointer}
+
+/* Hero */
+.hero{background:var(--brand-green);color:#fff;padding:72px 16px 56px}
+.hero .logo{max-width:420px;margin:0 auto;display:block}
+.hero .tag{margin-top:18px;text-align:center;color:rgba(255,255,255,0.9)}
+.pathways{display:flex;gap:28px;justify-content:center;align-items:flex-end;margin-top:40px}
+.pathway{display:flex;flex-direction:column;align-items:center;color:#e7f3ee}
+.pathway img{width:84px;height:84px}
+.pathway p{margin-top:10px;color:#e7f3ee}
 .button{background:var(--accent);color:#fff;padding:8px 12px;border-radius:6px;border:none;cursor:pointer}
 .small{font-size:0.9rem;color:var(--muted)}
 .filters{display:flex;gap:8px;margin-bottom:12px}

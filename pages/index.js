@@ -5,8 +5,38 @@ export default function Home() {
   return (
     <>
       <Header />
+      <section className="hero">
+        <div className="container">
+          <img src="/ram-logo.svg" alt="ram ventures" className="logo" />
+          <p className="tag">A university incubator: pathways for Explorer, Entrepreneur, Creative, Civic, and Intrapreneur</p>
+
+          <div className="pathways">
+            <div className="pathway">
+              <img src="/pathways/innovator.svg" alt="Innovator" />
+              <p>Innovator</p>
+            </div>
+            <div className="pathway">
+              <img src="/pathways/creative.svg" alt="Creative" />
+              <p>Creative</p>
+            </div>
+            <div className="pathway">
+              <img src="/pathways/entrepreneur.svg" alt="Entrepreneur" />
+              <p>Entrepreneur</p>
+            </div>
+            <div className="pathway">
+              <img src="/pathways/explorer.svg" alt="Explorer" />
+              <p>Explorer</p>
+            </div>
+            <div className="pathway">
+              <img src="/pathways/intrapreneur.svg" alt="Intrapreneur" />
+              <p>Intrapreneur</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <main className="container" style={{padding:20}}>
-        <h1>University Incubator — MVP</h1>
+        <h2 style={{marginTop:12}}>Quick Links</h2>
         <p>Central hub for student startups and senior design projects.</p>
 
         <div className="grid">
