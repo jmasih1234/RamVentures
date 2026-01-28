@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <style>
+      .dash{stroke:#e7f3ee;stroke-width:2;fill:none;stroke-dasharray:8 6;opacity:0.9}
+      .arrow{fill:#e7f3ee}
+    </style>
+  </defs>
+  <!-- Paths from logo top center to five icons -->
+  <path class="dash" d="M600 80 C540 140,480 160,360 240" />
+  <path class="dash" d="M600 80 C580 140,540 160,460 220" />
+  <path class="dash" d="M600 80 C620 140,700 160,740 220" />
+  <path class="dash" d="M600 80 C680 140,760 160,840 220" />
+  <path class="dash" d="M600 80 C720 140,780 160,900 240" />
+
+  <!-- small arrowheads -->
+  <polygon class="arrow" points="352,236 344,246 360,246" />
+  <polygon class="arrow" points="458,222 450,232 466,232" />
+  <polygon class="arrow" points="738,222 730,232 746,232" />
+  <polygon class="arrow" points="838,222 830,232 846,232" />
+  <polygon class="arrow" points="898,246 890,256 906,256" />
+</svg>

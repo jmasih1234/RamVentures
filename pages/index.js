@@ -7,7 +7,8 @@ export default function Home() {
       <Header />
       <section className="hero">
         <div className="container">
-          <img src="/ram-logo.svg" alt="ram ventures" className="logo" />
+            <img src="/ram-logo.svg" alt="ram ventures" className="logo" />
+            <img src="/overlays/arrows.svg" alt="paths" className="overlay" />
           <p className="tag">A university incubator: pathways for Explorer, Entrepreneur, Creative, Civic, and Intrapreneur</p>
 
           <div className="pathways">
