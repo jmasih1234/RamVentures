@@ -5,71 +5,81 @@ export default function Home() {
   return (
     <>
       <Header />
-      <section className="hero">
-        <div className="container">
-            <img id="hero-logo" src="/ram-logo.svg" alt="ram ventures" className="logo" />
-            {/* client-side overlay component draws responsive dashed arrows */}
-            <div style={{position:'absolute',left:0,right:0,top:0,bottom:0,display:'flex',justifyContent:'center',pointerEvents:'none'}}>
-              {/* ArrowOverlay is client-only behavior; import dynamically to avoid SSR issues */}
-              <script dangerouslySetInnerHTML={{__html: `window.__arrow_ids = ['path-innovator','path-creative','path-entrepreneur','path-explorer','path-intrapreneur']`}} />
-              <div id="arrow-mount" style={{width:'100%',maxWidth:1200}}>
-                {/* will be replaced by ArrowOverlay via dynamic import on client */}
-              </div>
-            </div>
-          <p className="tag">A university incubator: pathways for Explorer, Entrepreneur, Creative, Civic, and Intrapreneur</p>
 
-          <div className="pathways">
-            <div className="pathway">
-              <img id="path-innovator" src="/pathways/innovator.svg" alt="Innovator" />
-              <p>Innovator</p>
-            </div>
-            <div className="pathway">
-              <img id="path-creative" src="/pathways/creative.svg" alt="Creative" />
-              <p>Creative</p>
-            </div>
-            <div className="pathway">
-              <img id="path-entrepreneur" src="/pathways/entrepreneur.svg" alt="Entrepreneur" />
-              <p>Entrepreneur</p>
-            </div>
-            <div className="pathway">
-              <img id="path-explorer" src="/pathways/explorer.svg" alt="Explorer" />
-              <p>Explorer</p>
-            </div>
-            <div className="pathway">
-              <img id="path-intrapreneur" src="/pathways/intrapreneur.svg" alt="Intrapreneur" />
-              <p>Intrapreneur</p>
-            </div>
+      <section className="hero banner">
+        <div className="hero-bg" />
+        <div className="hero-inner container">
+          <h1 className="hero-title">Ram Venture Labs</h1>
+          <p className="hero-sub">Supporting student founders, makers, and intrapreneurs — events, mentorship, and project teams.</p>
+
+          <div className="hero-actions">
+            <Link href="/ventures"><a className="cta primary">Browse Ventures</a></Link>
+            <Link href="/events"><a className="cta secondary">Upcoming Events</a></Link>
+            <a className="cta ghost" href="#membership">Join</a>
           </div>
         </div>
       </section>
 
-      <main className="container" style={{padding:20}}>
-        <h2 style={{marginTop:12}}>Quick Links</h2>
-        <p>Central hub for student startups and senior design projects.</p>
-
-        <div className="grid">
-          <Link href="/ventures">
-            <div className="card">
-              <h3>Ventures directory</h3>
-              <p className="small">Browse student startups and senior design projects.</p>
+      <main>
+        <section id="about" className="section container">
+          <div className="split">
+            <div>
+              <h2>About</h2>
+              <p>Ram Venture Labs is a university incubator and student startup hub modeled to help students build teams, ship projects, and connect with mentors and investors.</p>
             </div>
-          </Link>
-
-          <Link href="/events">
-            <div className="card">
-              <h3>Events & Demo Day</h3>
-              <p className="small">See upcoming events and demo opportunities.</p>
+            <div>
+              <h3>Our focus</h3>
+              <ul>
+                <li>Student startups & senior design projects</li>
+                <li>Mentorship and office hours</li>
+                <li>Demo days and funding opportunities</li>
+              </ul>
             </div>
-          </Link>
+          </div>
+        </section>
 
-          <Link href="/admin">
-            <div className="card">
-              <h3>Admin dashboard</h3>
-              <p className="small">Add or edit ventures and events (MVP).</p>
+        <section id="events" className="section alt">
+          <div className="container">
+            <h2>Upcoming Events</h2>
+            <p className="muted">Quick list of upcoming meetups, workshops, and demo days.</p>
+            <div className="grid">
+              <Link href="/events"><a className="card"><h3>Hackathon Workshop</h3><p className="small">Next: Feb 14 — Intro to Product-Market Fit</p></a></Link>
+              <Link href="/events"><a className="card"><h3>Mentor Office Hours</h3><p className="small">Weekly sessions with alumni mentors</p></a></Link>
+              <Link href="/events"><a className="card"><h3>Demo Day</h3><p className="small">Spring showcase for student ventures</p></a></Link>
             </div>
-          </Link>
-        </div>
+          </div>
+        </section>
+
+        <section id="membership" className="section container">
+          <h2>Membership</h2>
+          <p>Join as a founder, mentor, or investor. Signups open to students and alumni.</p>
+          <div style={{marginTop:12}}>
+            <a href="/admin" className="button">Apply / Sign Up</a>
+          </div>
+        </section>
+
+        <section id="gallery" className="section alt container">
+          <h2>Gallery</h2>
+          <div className="gallery">
+            <img src="/pathways-composite.png" alt="gallery" />
+            <img src="/ram-logo.svg" alt="logo" />
+            <img src="/pathways-composite.png" alt="gallery2" />
+          </div>
+        </section>
+
+        <section id="contact" className="section container">
+          <h2>Contact</h2>
+          <p>Email: <a href="mailto:info@ramventures.edu">info@ramventures.edu</a></p>
+          <p>Follow us on social: <a href="#">Twitter</a> · <a href="#">Instagram</a></p>
+        </section>
       </main>
+
+      <footer className="site-footer">
+        <div className="container">
+          <div className="footer-left">© {new Date().getFullYear()} Ram Venture Labs</div>
+          <div className="footer-right">Built for students · <a href="/admin">Admin</a></div>
+        </div>
+      </footer>
     </>
   )
 }
