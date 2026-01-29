@@ -1,8 +1,8 @@
 h1,h2,h3{font-family:Merriweather, Georgia, serif}
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@700;900&display=swap');
-/* Snowriders-inspired palette: dark background, warm accent */
-:root{--brand-accent:#ff7a18;--bg:#07080a;--panel:#0f1724;--muted:#9aa3a8;--card-bg:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))}
-html,body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;font-weight:400;background:var(--bg);color:#fff}
+/* Ram Venture palette: use brand green, remove orange and blue */
+:root{--brand-accent:#0f5b3f;--text-color:#0f1724;--bg:#ffffff;--panel:#f7faf7;--muted:#6b7280;--card-bg:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(250,251,250,1))}
+html,body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;font-weight:400;background:var(--bg);color:var(--text-color)}
 .site-header{background:transparent;position:fixed;top:0;left:0;right:0;z-index:60;height:76px;padding:18px 28px;display:flex;align-items:center;justify-content:space-between}
 .brand-link{display:inline-flex;align-items:center;gap:12px}
 .nav-logo{height:44px}
@@ -13,7 +13,10 @@ html,body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica N
 /* subtle solid header variant for when content scrolls under */
 .site-header.solid{background:linear-gradient(180deg, rgba(11,11,13,0.86), rgba(11,11,13,0.72));backdrop-filter:blur(6px);box-shadow:0 6px 20px rgba(2,6,23,0.4)}
 
-.hero{background:linear-gradient(180deg, rgba(2,2,4,0.36), rgba(2,2,4,0.36)), url('/hero-bg.jpg');background-size:cover;background-position:center;color:#fff;padding:160px 16px 64px;display:flex;align-items:center;justify-content:center;min-height:520px;position:relative;overflow:hidden}
+/* global link color — avoid browser default blue */
+a{color:var(--brand-accent)}
+
+.hero{background:linear-gradient(180deg, rgba(15,91,63,0.88), rgba(15,91,63,0.88)), url('/pathways-composite.png');background-size:cover;background-position:center;color:#fff;padding:160px 16px 64px;display:flex;align-items:center;justify-content:center;min-height:520px;position:relative;overflow:hidden}
 .hero .logo{max-width:420px;margin:0 auto 28px auto;display:block}
 .container{max-width:980px;margin:0 auto;padding:24px}
 .header{display:flex;justify-content:space-between;align-items:center;padding:12px 24px;border-bottom:1px solid #eee;background:#fff}
@@ -33,21 +36,23 @@ html,body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica N
 .hero{background:var(--brand-green);color:#fff;padding:140px 16px 80px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:420px}
 .hero .logo{max-width:420px;margin:0 auto 28px auto;display:block}
 .hero-inner{position:relative;z-index:2;text-align:center}
-.hero-title{font-size:56px;margin:0 0 10px 0;letter-spacing:-0.6px;font-weight:900;text-shadow:0 8px 30px rgba(2,2,4,0.6)}
-.hero-sub{max-width:900px;margin:0 auto;color:rgba(255,255,255,0.92);margin-bottom:22px;font-weight:300}
+.hero-title{font-size:56px;margin:0 0 10px 0;letter-spacing:-0.6px;font-weight:900;text-shadow:0 12px 40px rgba(3,30,18,0.6)}
+.hero-sub{max-width:900px;margin:0 auto;color:rgba(255,255,255,0.95);margin-bottom:22px;font-weight:300}
 .hero .container{max-width:1100px}
 .hero-actions{display:flex;gap:12px;justify-content:center}
 .cta{padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:700;display:inline-block}
-.cta.primary{background:var(--brand-accent);color:#081018;box-shadow:0 12px 36px rgba(255,122,24,0.12)}
+.cta.primary{background:var(--brand-accent);color:#ffffff;box-shadow:0 12px 36px rgba(15,91,63,0.12)}
 .cta.secondary{background:transparent;border:2px solid rgba(255,255,255,0.12);color:#fff}
 .cta.ghost{background:transparent;color:#fff;opacity:0.95}
 
 /* replace archaic blue buttons */
-.button{background:var(--brand-accent);color:#081018;padding:10px 14px;border-radius:999px;border:none;cursor:pointer;font-weight:700}
+.button{background:var(--brand-accent);color:#ffffff;padding:10px 14px;border-radius:999px;border:none;cursor:pointer;font-weight:700}
 
 .hero-actions{gap:18px}
 
 .hero-bg{position:absolute;left:0;right:0;top:0;height:100%;background-image:linear-gradient(180deg, rgba(2,2,4,0.28), rgba(2,2,4,0.6));opacity:1;filter:blur(0px)}
+
+.venture-backdrop{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;opacity:0.16}
 
 /* smoother animated transforms for hero/bg */
 .hero-bg{transition:transform 700ms cubic-bezier(.2,.9,.2,1)}
@@ -59,7 +64,7 @@ html,body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica N
 
 /* Heading underline sweep */
 .section h2{position:relative;display:inline-block}
-.section h2::after{content:'';position:absolute;left:0;bottom:-8px;height:3px;width:0;background:linear-gradient(90deg,var(--accent),#ff7a18);border-radius:3px;transition:width 520ms cubic-bezier(.2,.9,.2,1)}
+.section h2::after{content:'';position:absolute;left:0;bottom:-8px;height:3px;width:0;background:linear-gradient(90deg,var(--brand-accent),var(--brand-accent));border-radius:3px;transition:width 520ms cubic-bezier(.2,.9,.2,1)}
 .section.in-view h2::after, .section h2.in-view::after{width:56%}
 
 /* Overlay arrow svg */
@@ -92,7 +97,7 @@ html,body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica N
 .gallery-card{display:block;background:var(--card-bg);border-radius:12px;overflow:hidden;box-shadow:0 12px 36px rgba(2,6,23,0.26);text-decoration:none;color:inherit;transform:translateY(8px);opacity:0;animation:cardIn .36s ease forwards}
 .gallery-thumb{height:200px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))}
 .gallery-thumb img{width:100%;height:100%;object-fit:cover}
-.thumb-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:36px;color:#081018;background:linear-gradient(180deg,#ffb87a,#ff8f3a)}
+.thumb-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:36px;color:#ffffff;background:linear-gradient(180deg,#0f5b3f,#0b472f)}
 .gallery-meta{padding:12px}
 
 @keyframes cardIn{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}

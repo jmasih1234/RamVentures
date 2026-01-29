@@ -10,7 +10,9 @@ export default function Home({ ventures = [] }) {
       <Header />
 
       <section className="hero banner">
-        <div className="hero-bg" />
+        <div className="hero-bg">
+          <img src="/pathways-composite.png" alt="Venture Backdrop" className="venture-backdrop" />
+        </div>
         <div className="hero-inner container">
           <h1 className="hero-title">Ram Venture Labs</h1>
           <p className="hero-sub">Supporting student founders, makers, and intrapreneurs — events, mentorship, and project teams.</p>
