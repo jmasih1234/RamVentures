@@ -1,5 +1,8 @@
 import Link from 'next/link'
 import Header from '../components/Header'
+import dynamic from 'next/dynamic'
+
+const MermaidChart = dynamic(() => import('../components/MermaidChart'), { ssr: false })
 
 export default function Home({ ventures = [] }) {
   return (
@@ -13,8 +16,8 @@ export default function Home({ ventures = [] }) {
           <p className="hero-sub">Supporting student founders, makers, and intrapreneurs — events, mentorship, and project teams.</p>
 
           <div className="hero-actions">
-            <Link href="/ventures"><a className="cta primary">Browse Ventures</a></Link>
-            <Link href="/events"><a className="cta secondary">Upcoming Events</a></Link>
+            <Link href="/ventures" className="cta primary">Browse Ventures</Link>
+            <Link href="/events" className="cta secondary">Upcoming Events</Link>
             <a className="cta ghost" href="#membership">Join</a>
           </div>
         </div>
@@ -43,9 +46,9 @@ export default function Home({ ventures = [] }) {
             <h2>Upcoming Events</h2>
             <p className="muted">Quick list of upcoming meetups, workshops, and demo days.</p>
             <div className="grid">
-              <Link href="/events"><a className="card"><h3>Hackathon Workshop</h3><p className="small">Next: Feb 14 — Intro to Product-Market Fit</p></a></Link>
-              <Link href="/events"><a className="card"><h3>Mentor Office Hours</h3><p className="small">Weekly sessions with alumni mentors</p></a></Link>
-              <Link href="/events"><a className="card"><h3>Demo Day</h3><p className="small">Spring showcase for student ventures</p></a></Link>
+              <Link href="/events" className="card"><h3>Hackathon Workshop</h3><p className="small">Next: Feb 14 — Intro to Product-Market Fit</p></Link>
+              <Link href="/events" className="card"><h3>Mentor Office Hours</h3><p className="small">Weekly sessions with alumni mentors</p></Link>
+              <Link href="/events" className="card"><h3>Demo Day</h3><p className="small">Spring showcase for student ventures</p></Link>
             </div>
           </div>
         </section>
@@ -85,10 +88,39 @@ export default function Home({ ventures = [] }) {
           </div>
         </section>
 
+        <section id="org-chart" className="section container alt">
+          <h2>Organizational Chart</h2>
+          <p className="muted">High-level management and departments.</p>
+          <MermaidChart code={`flowchart TD
+          Management[Management<br/>Daniel]
+
+          %% Leadership layer
+          Management --> Jay[Jay<br/>Head of Operations]
+          Management --> Joshua[Joshua<br/>Head of Tech]
+          Management --> AbrahamM[Abraham<br/>Head of Marketing]
+          Management --> AbrahamA[Abraham<br/>Head of Analytics]
+          Management --> DanielI[Daniel<br/>Head of Investment]
+
+          %% Departments under heads
+          Jay --> Ops[Operations]
+          Joshua --> Tech[Tech]
+          AbrahamM --> Mkt[Marketing]
+          AbrahamA --> Anal[Analytics]
+          DanielI --> Invest[Investment]
+
+          %% Operations subtree
+          Ops --> AgaThon[Ag-a-thon]
+          AgaThon --> James[James]
+          AgaThon --> Lucas[Lucas]
+          AgaThon --> Aidan[Aidan]
+          AgaThon --> Bailey[Bailey]
+      `} />
+        </section>
+
         <section id="contact" className="section container">
           <h2>Contact</h2>
           <p>Email: <a href="mailto:csuramventure@gmail.com">csuramventure@gmail.com</a></p>
-          <p>Follow us on social: <a href="#">Twitter</a> · <a href="https://www.instagram.com/csuramventurelabs/">Instagram</a></p>
+          <p>Follow us on our socials: <a href="https://www.linkedin.com/in/ramventure/">Linkedin</a> · <a href="https://www.instagram.com/csuramventurelabs/">Instagram</a></p>
         </section>
       </main>
 
