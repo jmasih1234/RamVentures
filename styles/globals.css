@@ -3,11 +3,11 @@ h1,h2,h3{font-family:Merriweather, Georgia, serif}
 /* Ram Venture palette: use brand green, remove orange and blue */
 :root{--brand-accent:#0f5b3f;--text-color:#0f1724;--bg:#ffffff;--panel:#f7faf7;--muted:#6b7280;--card-bg:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(250,251,250,1))}
 html,body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;font-weight:400;background:var(--bg);color:var(--text-color)}
-.site-header{background:transparent;position:fixed;top:0;left:0;right:0;z-index:60;height:76px;padding:18px 28px;display:flex;align-items:center;justify-content:space-between}
+.site-header{background:rgba(255,255,255,0.92);position:fixed;top:0;left:0;right:0;z-index:60;height:76px;padding:12px 28px;display:flex;align-items:center;justify-content:space-between}
 .brand-link{display:inline-flex;align-items:center;gap:12px}
 .nav-logo{height:44px}
 .main-nav{display:flex;gap:22px;align-items:center}
-.main-nav a{color:rgba(255,255,255,0.95);font-weight:700;text-decoration:none;padding:6px 8px}
+.main-nav a{color:var(--text-color) !important;font-weight:700;text-decoration:none;padding:6px 8px}
 .main-nav a.muted{opacity:0.8;font-weight:600}
 
 /* subtle solid header variant for when content scrolls under */
