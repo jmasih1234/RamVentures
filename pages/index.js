@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Header from '../components/Header'
 
-export default function Home() {
+export default function Home({ ventures = [] }) {
   return (
     <>
       <Header />
@@ -59,18 +59,36 @@ export default function Home() {
         </section>
 
         <section id="gallery" className="section alt container">
-          <h2>Gallery</h2>
+          <h2>Featured Ventures</h2>
+          <p className="muted">Latest student projects and startups — click to view details.</p>
           <div className="gallery">
-            <img src="/pathways-composite.png" alt="gallery" />
-            <img src="/ram-logo.svg" alt="logo" />
-            <img src="/pathways-composite.png" alt="gallery2" />
+            {ventures.length === 0 && (
+              <div className="empty">No ventures yet</div>
+            )}
+            {ventures.map((v, i) => (
+              <a key={v.id} href={`/ventures/${v.id}`} className="gallery-card" style={{animationDelay:`${i * 80}ms`}}>
+                <div className="gallery-thumb">
+                  {v.logo_url ? (
+                    // use provided logo if available
+                    <img src={v.logo_url} alt={v.name} />
+                  ) : (
+                    // fallback: generated initials block
+                    <div className="thumb-fallback">{(v.name||'').split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase()}</div>
+                  )}
+                </div>
+                <div className="gallery-meta">
+                  <strong>{v.name}</strong>
+                  <div className="small muted">{v.majors || 'Student project'}</div>
+                </div>
+              </a>
+            ))}
           </div>
         </section>
 
         <section id="contact" className="section container">
           <h2>Contact</h2>
-          <p>Email: <a href="mailto:info@ramventures.edu">info@ramventures.edu</a></p>
-          <p>Follow us on social: <a href="#">Twitter</a> · <a href="#">Instagram</a></p>
+          <p>Email: <a href="mailto:csuramventure@gmail.com">csuramventure@gmail.com</a></p>
+          <p>Follow us on social: <a href="#">Twitter</a> · <a href="https://www.instagram.com/csuramventurelabs/">Instagram</a></p>
         </section>
       </main>
 
@@ -82,4 +100,17 @@ export default function Home() {
       </footer>
     </>
   )
+}
+
+export async function getServerSideProps(){
+  // fetch latest ventures from Supabase for the gallery
+  let ventures = []
+  try{
+    const supabase = (await import('../lib/supabaseClient')).default
+    const { data } = await supabase.from('ventures').select('*').order('created_at', { ascending: false }).limit(8)
+    ventures = data || []
+  }catch(e){
+    console.warn('Could not load ventures for homepage', e.message)
+  }
+  return { props: { ventures } }
 }
