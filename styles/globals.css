@@ -2,13 +2,13 @@
 .root{--accent:#0b5cff;--muted:#666}
 /* Brand */
 :root{--brand-green:#0f5b3f;--brand-green-dark:#0b462f;--muted:#e6efe9;--card-bg:#fff}
-.site-header{background:#fff;border-bottom:1px solid rgba(16,24,40,0.06);position:sticky;top:0;z-index:40}
+.site-header{background:#fff;border-bottom:1px solid rgba(16,24,40,0.06);position:sticky;top:0;z-index:40;height:72px}
 .nav-logo{height:44px}
 .main-nav{display:flex;gap:20px;align-items:center}
 .main-nav a{color:#0f1724;text-decoration:none;font-weight:600}
 .main-nav a.muted{opacity:0.6;font-weight:500}
 
-.hero{background:linear-gradient(180deg, rgba(15,91,63,0.95), rgba(11,70,47,0.95));color:#fff;padding:84px 16px 64px;display:flex;align-items:center;justify-content:center;min-height:420px;position:relative;overflow:hidden}
+.hero{background:linear-gradient(180deg, rgba(15,91,63,0.95), rgba(11,70,47,0.95));color:#fff;padding:140px 16px 64px;display:flex;align-items:center;justify-content:center;min-height:420px;position:relative;overflow:hidden}
 .hero .logo{max-width:420px;margin:0 auto 28px auto;display:block}
 .container{max-width:980px;margin:0 auto;padding:24px}
 .header{display:flex;justify-content:space-between;align-items:center;padding:12px 24px;border-bottom:1px solid #eee;background:#fff}
@@ -43,9 +43,9 @@
 
 /* Make hero logo visually dominant on large screens */
 @media (min-width: 900px) {
-	.hero{padding-top:120px;min-height:520px}
-	.hero-title{font-size:64px}
-	.cta{padding:14px 18px}
+  .hero{padding-top:160px;min-height:520px}
+  .hero-title{font-size:64px}
+  .cta{padding:14px 18px}
 }
 
 @media (max-width:600px){
