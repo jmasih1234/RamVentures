@@ -77,6 +77,16 @@
 
 .empty{padding:40px;text-align:center;color:#666}
 
+/* reveal class applied when element enters viewport */
+.in-view{opacity:1;transform:none}
+
+/* smooth transitions for sections and hero */
+.section, .gallery-card{transition:transform .36s cubic-bezier(.2,.9,.2,1),opacity .36s ease}
+
+/* subtle SVG logo transition */
+.nav-logo{transition:transform .6s cubic-bezier(.2,.9,.2,1)}
+.nav-logo:hover{transform:translateY(-2px) scale(1.02)}
+
 .site-footer{border-top:1px solid rgba(16,24,40,0.06);padding:18px 0;background:#fff}
 .site-footer .container{display:flex;justify-content:space-between;align-items:center}
 

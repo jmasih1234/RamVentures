@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import { useEffect } from 'react'
+import InteractiveEffects from '../components/InteractiveEffects'
 
 export default function MyApp({ Component, pageProps }) {
   useEffect(()=>{
@@ -17,5 +18,10 @@ export default function MyApp({ Component, pageProps }) {
     }
   }, [])
 
-  return <Component {...pageProps} />
+  return (
+    <>
+      <InteractiveEffects />
+      <Component {...pageProps} />
+    </>
+  )
 }
