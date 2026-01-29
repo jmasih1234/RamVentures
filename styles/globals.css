@@ -87,6 +87,19 @@
 .nav-logo{transition:transform .6s cubic-bezier(.2,.9,.2,1)}
 .nav-logo:hover{transform:translateY(-2px) scale(1.02)}
 
+/* Logo animator overlay */
+.logo-anim-overlay{mix-blend-mode:screen}
+.logo-anim-path{stroke-dasharray:1200;stroke-dashoffset:1200;animation:dashTrim 1.6s cubic-bezier(.2,.9,.2,1) 0.18s forwards, logoPulse 2.6s ease 1.2s both}
+
+@keyframes dashTrim{
+	to{stroke-dashoffset:0}
+}
+@keyframes logoPulse{
+	0%{opacity:0;transform:scale(.98)}
+	40%{opacity:1;transform:scale(1.02)}
+	100%{opacity:1;transform:scale(1)}
+}
+
 .site-footer{border-top:1px solid rgba(16,24,40,0.06);padding:18px 0;background:#fff}
 .site-footer .container{display:flex;justify-content:space-between;align-items:center}
 

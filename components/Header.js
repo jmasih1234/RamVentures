@@ -1,12 +1,15 @@
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
+
+const LogoAnimator = dynamic(()=>import('./LogoAnimator'), { ssr: false })
 
 export default function Header(){
   return (
     <header className="header site-header">
       <div className="brand">
         <Link href="/">
-          <a className="brand-link">
-            <img src="/ram-logo.svg" alt="Ram Venture Labs" className="nav-logo" />
+          <a className="brand-link" aria-label="Ram Venture Labs">
+            <LogoAnimator />
           </a>
         </Link>
       </div>
