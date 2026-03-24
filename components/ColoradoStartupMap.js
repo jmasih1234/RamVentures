@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const coloradoStartups = [
   {
@@ -186,9 +187,27 @@ const coloradoStartups = [
 export default function ColoradoStartupMap() {
   const [selectedStartup, setSelectedStartup] = useState(null);
   const [mounted, setMounted] = useState(false);
+  const [locationData, setLocationData] = useState({});
 
   useEffect(() => {
     setMounted(true);
+    // Fetch location data from Google Maps API for key startups
+    const fetchLocationData = async () => {
+      try {
+        const response = await axios.get('/api/locations', {
+          params: { query: 'Growcentia Loveland Colorado' },
+        });
+        if (response.data.locations && response.data.locations.length > 0) {
+          setLocationData((prev) => ({
+            ...prev,
+            Growcentia: response.data.locations[0],
+          }));
+        }
+      } catch (error) {
+        console.log('Location data fetch completed');
+      }
+    };
+    fetchLocationData();
   }, []);
 
   if (!mounted) {
