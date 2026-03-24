@@ -222,10 +222,11 @@ export default function ColoradoStartupMap() {
             frameBorder="0"
             src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d100945.73255062358!2d-104.73870848593743!3d40.11827502926847!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!0m0!1x0!1y0!1z!3m5!1s0x876b7cf5fcb75555%3A0xa70a1f7c2e41d0!2sColorado!5e0!3m2!1sen!2sus!4v1234567890"
             allowFullScreen=""
+            allow="geolocation"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             title="Colorado Map"
-            style={{ border: 'none' }}
+            style={{ border: 'none', display: 'block' }}
           ></iframe>
         </div>
 
