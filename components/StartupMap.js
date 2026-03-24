@@ -85,30 +85,32 @@ export default function StartupMap() {
   const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${avgLat},${avgLng}&zoom=3&size=600x600&style=feature:all%7Celement:labels%7Cvisibility:off&style=feature:water%7Ccolor:0xb3d9ff&style=feature:land%7Ccolor:0xf3f3f3&style=feature:road%7Cvisibility:off&style=feature:administrative%7Celement:geometry.stroke%7Ccolor:0xcccccc${markers}&key=AIzaSyBu-916DdpKAjTmJKoperQ4AGg-_8Ujg90`;
 
   return (
-    <div className="startup-map-container">
-      <div className="map-wrapper">
-        <img
-          src={mapUrl}
-          alt="Startup Locations Map"
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-        />
-      </div>
+    <>
+      <div className="startup-map-container">
+        <div className="map-wrapper">
+          <img
+            src={mapUrl}
+            alt="Startup Locations Map"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        </div>
 
-      <div className="startup-list">
-        <h2>Agriculture Startups Portal</h2>
-        <div className="startups-grid">
-          {startupData.map((startup) => (
-            <div
-              key={startup.id}
-              className={`startup-card ${selectedStartup?.id === startup.id ? 'active' : ''}`}
-              onClick={() => setSelectedStartup(startup)}
-            >
-              <h3>{startup.name}</h3>
-              <p className="stage-badge">{startup.stage}</p>
-              <p>{startup.description}</p>
-              <p className="location">{startup.location}</p>
-            </div>
-          ))}
+        <div className="startup-list">
+          <h2>Agriculture Startups Portal</h2>
+          <div className="startups-grid">
+            {startupData.map((startup) => (
+              <div
+                key={startup.id}
+                className={`startup-card ${selectedStartup?.id === startup.id ? 'active' : ''}`}
+                onClick={() => setSelectedStartup(startup)}
+              >
+                <h3>{startup.name}</h3>
+                <p className="stage-badge">{startup.stage}</p>
+                <p>{startup.description}</p>
+                <p className="location">{startup.location}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -208,6 +210,6 @@ export default function StartupMap() {
           }
         }
       `}</style>
-    </div>
+    </>
   );
 }
