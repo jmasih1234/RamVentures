@@ -3,83 +3,183 @@ import { useState, useEffect } from 'react';
 const coloradoStartups = [
   {
     id: 1,
-    name: 'Local Bounce',
+    name: 'Growcentia',
     industry: 'Agriculture',
-    location: 'Fort Collins, CO',
-    lat: 40.5853,
-    lng: -105.0844,
-    description: 'Precision livestock management and ag tech solutions',
-    stage: 'Series A',
+    location: 'Loveland, CO',
+    lat: 40.3937,
+    lng: -105.0039,
+    description: 'CSU-licensed soil science technology for sustainable agriculture',
+    stage: 'Growth',
+    contact: 'Scott Wiley',
+    website: 'growcentia.com',
   },
   {
     id: 2,
-    name: 'High Plains Bio',
+    name: 'New West Genetics',
     industry: 'Agriculture',
     location: 'Fort Collins, CO',
     lat: 40.5853,
     lng: -105.0844,
-    description: 'Sustainable crop breeding and seed genetics',
-    stage: 'Seed',
+    description: 'Hemp genetics and crop innovation from CSU faculty expertise',
+    stage: 'Growth',
+    contact: 'Wendy Mosher',
+    website: 'newwestgenetics.com',
   },
   {
     id: 3,
-    name: 'Rocky Mountain Agritech',
+    name: 'AEMS Corp',
     industry: 'Agriculture',
     location: 'Fort Collins, CO',
     lat: 40.5853,
     lng: -105.0844,
-    description: 'Water conservation and irrigation optimization',
+    description: 'CSU Spur graduate with ag-tech innovation expertise',
     stage: 'Growth',
+    contact: 'Dr. W. Scott Compel',
+    website: 'aemscorp.com',
   },
   {
     id: 4,
-    name: 'Colorado Agro Analytics',
+    name: 'SWIIM System',
     industry: 'Agriculture',
     location: 'Denver, CO',
     lat: 39.7392,
     lng: -104.9903,
-    description: 'Farm data analytics and yield prediction AI',
-    stage: 'Series A',
+    description: 'Irrigation optimization. Forbes top 25 ag-tech. 70K+ acres deployed.',
+    stage: 'Series B',
+    contact: 'Kevin France',
+    website: 'swiim.com',
   },
   {
     id: 5,
-    name: 'Mile High Crops',
-    industry: 'Agriculture',
-    location: 'Denver, CO',
-    lat: 39.7392,
-    lng: -104.9903,
-    description: 'Urban vertical farming in Colorado',
-    stage: 'Seed',
-  },
-  {
-    id: 6,
-    name: 'Colorado Sustainable Ag',
-    industry: 'Agriculture',
-    location: 'Denver, CO',
-    lat: 39.7392,
-    lng: -104.9903,
-    description: 'Organic farming technologies and soil health',
-    stage: 'Growth',
-  },
-  {
-    id: 7,
-    name: 'Front Range Agri Solutions',
-    industry: 'Agriculture',
+    name: 'Innosphere Ventures',
+    industry: 'Accelerator',
     location: 'Fort Collins, CO',
     lat: 40.5853,
     lng: -105.0844,
-    description: 'Drone-based crop monitoring for Colorado farmers',
-    stage: 'Series B',
+    description: '201+ investments, $1.2B raised. CSU partnership & bioscience lab.',
+    stage: 'Active',
+    contact: 'Mike Freeman',
+    website: 'innosphereventures.org',
+  },
+  {
+    id: 6,
+    name: 'Barn Owl Tech',
+    industry: 'Agriculture',
+    location: 'Colorado Springs, CO',
+    lat: 38.8339,
+    lng: -104.8202,
+    description: 'IoT/ag-tech for producers. 7K+ customers, 250% growth.',
+    stage: 'Growth',
+    contact: 'Josh Phifer',
+    website: 'barnowl.tech',
+  },
+  {
+    id: 7,
+    name: 'Rooted Robotics',
+    industry: 'Agriculture',
+    location: 'Boulder, CO',
+    lat: 40.0150,
+    lng: -105.2705,
+    description: 'Indoor farming automation. Raising $1M, $100K+ sold globally.',
+    stage: 'Seed',
+    contact: 'Max Knight',
+    website: 'rootedrobotics.com',
   },
   {
     id: 8,
-    name: 'Denver Farm Tech',
+    name: 'AgriWebb',
     industry: 'Agriculture',
     location: 'Denver, CO',
     lat: 39.7392,
     lng: -104.9903,
-    description: 'Agricultural equipment rental and sharing platform',
+    description: 'Livestock management software. 17.5M animals, 12K users globally.',
     stage: 'Growth',
+    contact: 'Kevin Baum',
+    website: 'agriwebb.com',
+  },
+  {
+    id: 9,
+    name: 'Compost Queen',
+    industry: 'Sustainability',
+    location: 'Fort Collins, CO',
+    lat: 40.5853,
+    lng: -105.0844,
+    description: 'Local Fort Collins composting. 700 tons/year capacity.',
+    stage: 'Growth',
+    contact: 'Jamie Blanchard-Poling',
+    website: 'compostqueenfc.com',
+  },
+  {
+    id: 10,
+    name: 'Compost Colorado',
+    industry: 'Sustainability',
+    location: 'Denver, CO',
+    lat: 39.7392,
+    lng: -104.9903,
+    description: 'Employee-owned PBC. Denver\'s first commercial composting facility.',
+    stage: 'Growth',
+    contact: 'Vann Fussell',
+    website: 'compost-colorado.com',
+  },
+  {
+    id: 11,
+    name: 'Mad Agriculture',
+    industry: 'Agriculture',
+    location: 'Boulder, CO',
+    lat: 40.0150,
+    lng: -105.2705,
+    description: 'Regenerative agriculture education & implementation programs.',
+    stage: 'Growth',
+    contact: 'Philip Taylor, PhD',
+    website: 'madagriculture.org',
+  },
+  {
+    id: 12,
+    name: 'Farmbrite',
+    industry: 'Agriculture',
+    location: 'Hygiene, CO',
+    lat: 40.3183,
+    lng: -105.2236,
+    description: 'Farm management SaaS. 4K+ users. Bootstrap success story.',
+    stage: 'Growth',
+    contact: 'Ian & Janine Russell',
+    website: 'farmbrite.com',
+  },
+  {
+    id: 13,
+    name: 'Cloud Agronomics',
+    industry: 'Agriculture',
+    location: 'Boulder, CO',
+    lat: 40.0150,
+    lng: -105.2705,
+    description: 'Remote soil carbon measurement. Climate-smart agriculture focus.',
+    stage: 'Series A',
+    contact: 'Mark Tracy',
+    website: 'cloudagronomics.com',
+  },
+  {
+    id: 14,
+    name: 'FoodMaven',
+    industry: 'Food Tech',
+    location: 'Denver, CO',
+    lat: 39.7392,
+    lng: -104.9903,
+    description: 'B2B surplus food marketplace. $39.6M raised. Food waste solutions.',
+    stage: 'Series C',
+    contact: 'FoodMaven Team',
+    website: 'foodmaven.com',
+  },
+  {
+    id: 15,
+    name: 'Infinite Harvest',
+    industry: 'Agriculture',
+    location: 'Lakewood, CO',
+    lat: 39.7294,
+    lng: -105.0662,
+    description: 'Indoor vertical farming. 30+ Whole Foods locations.',
+    stage: 'Growth',
+    contact: 'Jim Romano',
+    website: 'infinite-harvest.com',
   },
 ];
 
@@ -151,6 +251,8 @@ export default function ColoradoStartupMap() {
                 <h3>{startup.name}</h3>
                 <p className="stage-badge">{startup.stage}</p>
                 <p className="description">{startup.description}</p>
+                {startup.contact && <p className="contact">👤 {startup.contact}</p>}
+                {startup.website && <p className="website">🌐 {startup.website}</p>}
               </div>
             ))}
           </div>
@@ -280,6 +382,19 @@ export default function ColoradoStartupMap() {
 
         .description {
           margin-top: 0.7rem !important;
+        }
+
+        .contact {
+          font-size: 0.8rem !important;
+          color: #666 !important;
+          margin-top: 0.5rem !important;
+        }
+
+        .website {
+          font-size: 0.8rem !important;
+          color: #667eea !important;
+          margin-top: 0.3rem !important;
+          text-decoration: none;
         }
 
         .stage-badge {
