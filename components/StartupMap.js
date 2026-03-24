@@ -1,15 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
-import { useState } from 'react';
-import 'leaflet/dist/leaflet.css';
-
-// Fix for default marker icons in Leaflet
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-shadow.png',
-});
+import { useState, useEffect } from 'react';
 
 const startupData = [
   {
@@ -76,37 +65,33 @@ const startupData = [
 
 export default function StartupMap() {
   const [selectedStartup, setSelectedStartup] = useState(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div>Loading...</div>;
+  }
+
+  const avgLat = startupData.reduce((sum, s) => sum + s.lat, 0) / startupData.length;
+  const avgLng = startupData.reduce((sum, s) => sum + s.lng, 0) / startupData.length;
+
+  const markers = startupData
+    .map((startup) => `&markers=color:blue%7C${startup.lat},${startup.lng}`)
+    .join('');
+
+  const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${avgLat},${avgLng}&zoom=3&size=600x600&style=feature:all%7Celement:labels%7Cvisibility:off&style=feature:water%7Ccolor:0xb3d9ff&style=feature:land%7Ccolor:0xf3f3f3&style=feature:road%7Cvisibility:off&style=feature:administrative%7Celement:geometry.stroke%7Ccolor:0xcccccc${markers}&key=AIzaSyBu-916DdpKAjTmJKoperQ4AGg-_8Ujg90`;
 
   return (
     <div className="startup-map-container">
       <div className="map-wrapper">
-        <MapContainer
-          center={[20, 0]}
-          zoom={3}
-          scrollWheelZoom={false}
-          style={{ height: '100%', width: '100%' }}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          {startupData.map((startup) => (
-            <Marker
-              key={startup.id}
-              position={[startup.lat, startup.lng]}
-              onClick={() => setSelectedStartup(startup)}
-            >
-              <Popup>
-                <div className="popup-content">
-                  <h3>{startup.name}</h3>
-                  <p>{startup.description}</p>
-                  <p><strong>Stage:</strong> {startup.stage}</p>
-                  <p><strong>Location:</strong> {startup.location}</p>
-                </div>
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
+        <img
+          src={mapUrl}
+          alt="Startup Locations Map"
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
       </div>
 
       <div className="startup-list">
@@ -210,16 +195,6 @@ export default function StartupMap() {
         .location {
           color: #999;
           font-size: 0.85rem !important;
-        }
-
-        .popup-content h3 {
-          margin: 0 0 0.5rem 0;
-          font-size: 1rem;
-        }
-
-        .popup-content p {
-          margin: 0.3rem 0;
-          font-size: 0.9rem;
         }
 
         @media (max-width: 1024px) {

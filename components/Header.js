@@ -33,6 +33,7 @@ export default function Header(){
       </div>
       <nav className="main-nav">
         <Link href="/ventures" className="nav-item">Ventures</Link>
+        <Link href="/startups" className="nav-item">Startups</Link>
         <Link href="/research" className="nav-item">Research</Link>
         <Link href="/events" className="nav-item">Events</Link>
         <Link href="/gallery" className="nav-item">Gallery</Link>
