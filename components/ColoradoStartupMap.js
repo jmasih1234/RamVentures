@@ -217,21 +217,40 @@ export default function ColoradoStartupMap() {
       <div className="colorado-map-container">
         <div className="map-section">
           <div className="map-wrapper">
-            <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d100945.73255062358!2d-104.73870848593743!3d40.11827502926847!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!0m0!1x0!1y0!1z!3m5!1s0x876b7cf5fcb75555%3A0xa70a1f7c2e41d0!2sColorado!5e0!3m2!1sen!2sus!4v1711270000000"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  border: 'none',
-                  display: 'block'
-                }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Colorado"
-              ></iframe>
-            </div>
+            <svg viewBox="0 0 800 600" style={{ width: '100%', height: '100%', background: '#e8f4f8' }}>
+              {/* Colorado SVG Map Background */}
+              <defs>
+                <style>{`
+                  .map-state { fill: #f0f0f0; stroke: #ccc; stroke-width: 1; }
+                  .startup-marker { fill: #667eea; stroke: white; stroke-width: 2; cursor: pointer; }
+                  .startup-marker:hover { fill: #764ba2; }
+                  .map-text { font-size: 12px; fill: #666; text-anchor: middle; }
+                `}</style>
+              </defs>
+              
+              {/* Simplified Colorado outline */}
+              <rect x="100" y="80" width="600" height="440" className="map-state" rx="5" />
+              
+              {/* Fort Collins marker */}
+              <circle cx="320" cy="180" r="12" className="startup-marker" />
+              <text x="320" y="175" className="map-text" fontSize="10" fontWeight="bold">FC</text>
+              <text x="320" y="220" className="map-text">Fort Collins</text>
+              <text x="320" y="235" className="map-text" fontSize="10">{fortCollinsCount} startups</text>
+              
+              {/* Denver marker */}
+              <circle cx="380" cy="320" r="12" className="startup-marker" />
+              <text x="380" y="315" className="map-text" fontSize="10" fontWeight="bold">D</text>
+              <text x="380" y="360" className="map-text">Denver</text>
+              <text x="380" y="375" className="map-text" fontSize="10">{denverCount} startups</text>
+              
+              {/* Other location markers */}
+              <circle cx="280" cy="280" r="8" className="startup-marker" opacity="0.6" />
+              <circle cx="420" cy="240" r="8" className="startup-marker" opacity="0.6" />
+              <circle cx="350" cy="400" r="8" className="startup-marker" opacity="0.6" />
+              
+              {/* Map labels */}
+              <text x="400" y="50" className="map-text" fontSize="16" fontWeight="bold">Colorado Agriculture Ecosystem</text>
+            </svg>
           </div>
         </div>
 
