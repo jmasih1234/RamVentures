@@ -217,39 +217,77 @@ export default function ColoradoStartupMap() {
       <div className="colorado-map-container">
         <div className="map-section">
           <div className="map-wrapper">
-            <svg viewBox="0 0 800 600" style={{ width: '100%', height: '100%', background: '#e8f4f8' }}>
-              {/* Colorado SVG Map Background */}
+            <svg viewBox="0 0 1000 800" style={{ width: '100%', height: '100%', background: '#d4e6f1' }}>
               <defs>
                 <style>{`
-                  .map-state { fill: #f0f0f0; stroke: #ccc; stroke-width: 1; }
-                  .startup-marker { fill: #667eea; stroke: white; stroke-width: 2; cursor: pointer; }
-                  .startup-marker:hover { fill: #764ba2; }
-                  .map-text { font-size: 12px; fill: #666; text-anchor: middle; }
+                  .map-state { fill: #f5f5f5; stroke: #999; stroke-width: 2; }
+                  .startup-marker { fill: #667eea; stroke: white; stroke-width: 2; cursor: pointer; transition: all 0.3s; }
+                  .startup-marker:hover { fill: #764ba2; r: 18; }
+                  .marker-label { font-size: 11px; fill: white; text-anchor: middle; vertical-align: middle; font-weight: bold; pointer-events: none; }
+                  .location-name { font-size: 14px; fill: #333; text-anchor: middle; font-weight: bold; pointer-events: none; }
+                  .location-count { font-size: 12px; fill: #666; text-anchor: middle; pointer-events: none; }
+                  .title { font-size: 28px; fill: #333; text-anchor: middle; font-weight: bold; }
                 `}</style>
               </defs>
               
-              {/* Simplified Colorado outline */}
-              <rect x="100" y="80" width="600" height="440" className="map-state" rx="5" />
+              {/* Colorado state shape (simplified) */}
+              <polygon points="250,150 350,100 450,120 500,100 520,150 550,200 580,300 550,400 500,420 450,450 400,440 350,460 320,420 280,400 250,350 240,300 230,250 240,200" className="map-state" />
               
-              {/* Fort Collins marker */}
-              <circle cx="320" cy="180" r="12" className="startup-marker" />
-              <text x="320" y="175" className="map-text" fontSize="10" fontWeight="bold">FC</text>
-              <text x="320" y="220" className="map-text">Fort Collins</text>
-              <text x="320" y="235" className="map-text" fontSize="10">{fortCollinsCount} startups</text>
+              {/* Water/geographic features background */}
+              <rect x="200" y="80" width="450" height="420" className="map-state" opacity="0.3" rx="10" />
               
-              {/* Denver marker */}
-              <circle cx="380" cy="320" r="12" className="startup-marker" />
-              <text x="380" y="315" className="map-text" fontSize="10" fontWeight="bold">D</text>
-              <text x="380" y="360" className="map-text">Denver</text>
-              <text x="380" y="375" className="map-text" fontSize="10">{denverCount} startups</text>
+              {/* Title */}
+              <text x="500" y="40" className="title">Colorado Startup Ecosystem</text>
               
-              {/* Other location markers */}
-              <circle cx="280" cy="280" r="8" className="startup-marker" opacity="0.6" />
-              <circle cx="420" cy="240" r="8" className="startup-marker" opacity="0.6" />
-              <circle cx="350" cy="400" r="8" className="startup-marker" opacity="0.6" />
+              {/* Fort Collins marker and info */}
+              <g>
+                <circle cx="320" cy="180" r="16" className="startup-marker" />
+                <text x="320" y="187" className="marker-label">FC</text>
+                <text x="320" y="240" className="location-name">Fort Collins</text>
+                <text x="320" y="260" className="location-count">{fortCollinsCount} Companies</text>
+                <line x1="320" y1="195" x2="320" y2="230" stroke="#667eea" strokeWidth="1" strokeDasharray="3,3" opacity="0.5" />
+              </g>
               
-              {/* Map labels */}
-              <text x="400" y="50" className="map-text" fontSize="16" fontWeight="bold">Colorado Agriculture Ecosystem</text>
+              {/* Denver marker and info */}
+              <g>
+                <circle cx="430" cy="320" r="16" className="startup-marker" />
+                <text x="430" y="327" className="marker-label">D</text>
+                <text x="430" y="380" className="location-name">Denver</text>
+                <text x="430" y="400" className="location-count">{denverCount} Companies</text>
+                <line x1="430" y1="335" x2="430" y2="370" stroke="#667eea" strokeWidth="1" strokeDasharray="3,3" opacity="0.5" />
+              </g>
+              
+              {/* Boulder marker */}
+              <g>
+                <circle cx="380" cy="150" r="10" className="startup-marker" opacity="0.7" />
+                <text x="320" y="130" className="location-count" fontSize="11">Boulder Area</text>
+              </g>
+              
+              {/* Colorado Springs marker */}
+              <g>
+                <circle cx="480" cy="380" r="10" className="startup-marker" opacity="0.7" />
+                <text x="520" y="390" className="location-count" fontSize="11">Colorado Springs</text>
+              </g>
+              
+              {/* Western Slope marker */}
+              <g>
+                <circle cx="280" cy="280" r="10" className="startup-marker" opacity="0.7" />
+                <text x="220" y="290" className="location-count" fontSize="11">Western Region</text>
+              </g>
+              
+              {/* Grid overlay for geographic reference */}
+              <line x1="200" y1="300" x2="650" y2="300" stroke="#e0e0e0" strokeWidth="1" opacity="0.3" />
+              <line x1="425" y1="80" x2="425" y2="500" stroke="#e0e0e0" strokeWidth="1" opacity="0.3" />
+              
+              {/* Legend */}
+              <g>
+                <rect x="200" y="520" width="400" height="120" fill="white" stroke="#ccc" strokeWidth="1" rx="5" />
+                <text x="220" y="545" className="location-name" fontSize="14">Legend</text>
+                <circle cx="230" cy="570" r="6" fill="#667eea" />
+                <text x="250" y="575" className="location-count">Primary Hub (4+ companies)</text>
+                <circle cx="230" cy="595" r="6" fill="#667eea" opacity="0.7" />
+                <text x="250" y="600" className="location-count">Secondary Hub (1-3 companies)</text>
+              </g>
             </svg>
           </div>
         </div>
