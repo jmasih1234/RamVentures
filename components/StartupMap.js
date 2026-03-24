@@ -117,96 +117,128 @@ export default function StartupMap() {
       <style jsx>{`
         .startup-map-container {
           display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 2rem;
-          height: calc(100vh - 100px);
-          padding: 2rem;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          grid-template-columns: 1.2fr 1fr;
+          gap: 0;
+          min-height: calc(100vh - 80px);
+          padding: 0;
+          background: #f8f9fa;
         }
 
         .map-wrapper {
           height: 100%;
-          border-radius: 12px;
+          min-height: calc(100vh - 80px);
+          border-radius: 0;
           overflow: hidden;
-          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+          box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-wrapper img {
+          width: 100% !important;
+          height: 100% !important;
         }
 
         .startup-list {
           background: white;
-          border-radius: 12px;
-          padding: 2rem;
+          border-radius: 0;
+          padding: 2.5rem 2rem;
           overflow-y: auto;
-          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+          box-shadow: none;
+          border-left: 1px solid #e8e8e8;
         }
 
         .startup-list h2 {
-          color: #333;
-          margin-bottom: 1.5rem;
-          font-size: 1.5rem;
+          color: #1a1a1a;
+          margin-bottom: 2rem;
+          font-size: 1.8rem;
+          font-weight: 700;
+          letter-spacing: -0.5px;
         }
 
         .startups-grid {
           display: flex;
           flex-direction: column;
-          gap: 1rem;
+          gap: 1.2rem;
         }
 
         .startup-card {
-          padding: 1.2rem;
-          border: 2px solid #e0e0e0;
-          border-radius: 8px;
+          padding: 1.5rem;
+          border: 1px solid #e0e0e0;
+          border-radius: 10px;
           cursor: pointer;
-          transition: all 0.3s ease;
-          background: #f9f9f9;
+          transition: all 0.25s ease;
+          background: #fff;
+          border-left: 4px solid transparent;
         }
 
         .startup-card:hover {
           border-color: #667eea;
-          background: #f0f4ff;
-          transform: translateX(5px);
+          border-left-color: #667eea;
+          background: #f8faff;
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+          transform: translateX(0);
         }
 
         .startup-card.active {
           border-color: #667eea;
-          background: #e8ecff;
-          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+          border-left-color: #667eea;
+          background: #f0f4ff;
+          box-shadow: 0 6px 16px rgba(102, 126, 234, 0.2);
         }
 
         .startup-card h3 {
-          margin: 0 0 0.5rem 0;
-          color: #333;
-          font-size: 1rem;
+          margin: 0 0 0.6rem 0;
+          color: #1a1a1a;
+          font-size: 1.1rem;
+          font-weight: 600;
         }
 
         .startup-card p {
-          margin: 0.3rem 0;
+          margin: 0.4rem 0;
           color: #666;
           font-size: 0.9rem;
+          line-height: 1.4;
         }
 
         .stage-badge {
           display: inline-block;
-          background: #667eea;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           color: white;
-          padding: 0.25rem 0.75rem;
-          border-radius: 20px;
-          font-size: 0.8rem;
-          margin: 0.5rem 0 !important;
+          padding: 0.35rem 0.85rem;
+          border-radius: 6px;
+          font-size: 0.75rem;
+          font-weight: 600;
+          margin: 0.7rem 0 !important;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
 
         .location {
           color: #999;
           font-size: 0.85rem !important;
+          margin-top: 0.7rem !important;
+          display: flex;
+          align-items: center;
+        }
+
+        .location::before {
+          content: '📍';
+          margin-right: 0.5rem;
         }
 
         @media (max-width: 1024px) {
           .startup-map-container {
             grid-template-columns: 1fr;
-            height: auto;
+            min-height: auto;
           }
 
           .map-wrapper {
-            height: 400px;
+            height: 350px;
+            min-height: 350px;
+          }
+
+          .startup-list {
+            border-left: none;
+            border-top: 1px solid #e8e8e8;
           }
         }
       `}</style>
