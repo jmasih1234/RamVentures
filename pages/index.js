@@ -40,19 +40,19 @@ export default function Home({ ventures = [] }) {
               <ScrollReveal>
                 <div className="stat-card">
                   <div className="stat-number">15+</div>
-                  <div className="stat-label">Active Ventures</div>
+                  <div className="stat-label">Seeking Active Ventures</div>
                 </div>
               </ScrollReveal>
               <ScrollReveal delay={100}>
                 <div className="stat-card">
                   <div className="stat-number">200+</div>
-                  <div className="stat-label">Community Members</div>
+                  <div className="stat-label">Vast Entrepreneurial Network</div>
                 </div>
               </ScrollReveal>
               <ScrollReveal delay={200}>
                 <div className="stat-card">
                   <div className="stat-number">$500K+</div>
-                  <div className="stat-label">In Funding</div>
+                  <div className="stat-label">Seeking Funding Actively</div>
                 </div>
               </ScrollReveal>
             </div>
@@ -64,7 +64,7 @@ export default function Home({ ventures = [] }) {
             <ScrollReveal>
               <div>
                 <h2>About</h2>
-                <p>Ram Ventures is a university incubator and student startup hub modeled to help students build teams, ship projects, and connect with mentors and investors.</p>
+                <p>Ram Ventures is a University incubator at Colorado State focused on helping students build teams, launch startups, and connect with mentors and investors across Northern Colorado.</p>
               </div>
             </ScrollReveal>
             <ScrollReveal delay={150}>
@@ -80,33 +80,7 @@ export default function Home({ ventures = [] }) {
           </div>
         </section>
 
-        <section id="events" className="section alt">
-          <div className="container">
-            <ScrollReveal>
-              <div>
-                <h2>Upcoming Events</h2>
-                <p className="muted">Quick list of upcoming meetups, workshops, and demo days.</p>
-              </div>
-            </ScrollReveal>
-            <div className="grid">
-              <ScrollReveal delay={50}>
-                <Link href="/events" className="card"><h3>Hackathon Workshop</h3><p className="small">Next: Feb 14 — Intro to Product-Market Fit</p></Link>
-              </ScrollReveal>
-              <ScrollReveal delay={100}>
-                <Link href="/events" className="card"><h3>Mentor Office Hours</h3><p className="small">Weekly sessions with alumni mentors</p></Link>
-              </ScrollReveal>
-              <ScrollReveal delay={150}>
-                <Link href="/events" className="card"><h3>Demo Day</h3><p className="small">Spring showcase for student ventures</p></Link>
-              </ScrollReveal>
-            </div>
-            <div style={{marginTop: '2rem', textAlign: 'center'}}>
-              <img src="/ram-events-poster.png" alt="Ram Ventures Events Poster" style={{maxWidth: '100%', height: 'auto', borderRadius: '8px'}} />
-            </div>
-            <div style={{marginTop: '2rem', textAlign: 'center'}}>
-              <a href="https://luma.com/exz9fc9w" target="_blank" rel="noopener noreferrer" style={{display: 'inline-block', padding: '12px 24px', backgroundColor: '#0f5b3f', color: 'white', textDecoration: 'none', borderRadius: '8px', fontWeight: '700', transition: 'all 0.3s ease'}}>View All Events on Luma</a>
-            </div>
-          </div>
-        </section>
+        
 
         {/* Testimonials Section - REMOVED */}
 
@@ -115,26 +89,26 @@ export default function Home({ ventures = [] }) {
             <ScrollReveal>
               <div>
                 <h2>Join Our Community</h2>
-                <p>Whether you're a founder, mentor, or investor — there's a place for you at Ram Ventures. Connect with ambitious students building the future.</p>
+                <p>Join Ram Ventures as a founder, mentor, or supporter and help build a stronger startup ecosystem at Colorado State.</p>
               </div>
             </ScrollReveal>
             <div className="membership-grid">
               <ScrollReveal delay={50}>
                 <div className="membership-card">
-                  <h3>🚀 Founders</h3>
-                  <p>Get access to resources, mentorship, and a community of fellow builders.</p>
+                  <h3>Founders</h3>
+                  <p>Build with peer teams, access mentorship, and move your venture from concept to traction.</p>
                 </div>
               </ScrollReveal>
               <ScrollReveal delay={100}>
                 <div className="membership-card">
-                  <h3>🎓 Mentors</h3>
-                  <p>Share your expertise and guide the next generation of entrepreneurs.</p>
+                  <h3>Mentors</h3>
+                  <p>Support student-led ventures with practical guidance in product, growth, and fundraising.</p>
                 </div>
               </ScrollReveal>
               <ScrollReveal delay={150}>
                 <div className="membership-card">
-                  <h3>💼 Investors</h3>
-                  <p>Discover early-stage opportunities and support student ventures.</p>
+                  <h3>Partners</h3>
+                  <p>Collaborate with emerging founders through sponsorships, pilots, and ecosystem partnerships.</p>
                 </div>
               </ScrollReveal>
             </div>
@@ -148,15 +122,13 @@ export default function Home({ ventures = [] }) {
           <ScrollReveal>
             <div>
               <h2>Featured Ventures</h2>
-              <p className="muted">Latest student projects and startups — click to view details.</p>
             </div>
           </ScrollReveal>
           <div className="gallery">
             {ventures.length === 0 ? (
               <div className="empty-state">
-                <div className="empty-icon">🚀</div>
                 <h3>Ventures Coming Soon</h3>
-                <p>Check back soon to see amazing projects from our student founders.</p>
+                <p>Check back soon for new ventures from CSU founders.</p>
               </div>
             ) : (
               ventures.map((v, i) => (
