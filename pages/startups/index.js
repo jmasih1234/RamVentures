@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import ColoradoStartupMap from '../../components/ColoradoStartupMap';
+import Header from '../../components/Header';
+import ColoradoStartupMapGoogle from '../../components/ColoradoStartupMapGoogle';
 
 export default function StartupPortal() {
   const [isClient, setIsClient] = useState(false);
@@ -25,8 +26,26 @@ export default function StartupPortal() {
   }
 
   return (
-    <div style={{ width: '100%', minHeight: '100vh' }}>
-      <ColoradoStartupMap />
-    </div>
+    <>
+      <Header />
+      <section className="page-hero">
+        <div className="container">
+          <h1 className="page-title">Colorado Startup Map</h1>
+          <p className="page-subtitle">
+            Explore CSU and Northern Colorado startups with a live map and curated directory.
+          </p>
+        </div>
+      </section>
+
+      <main style={{ paddingTop: 0 }}>
+        <section className="section" style={{ paddingTop: 24, paddingBottom: 24 }}>
+          <div className="container" style={{ maxWidth: 1400 }}>
+            <div style={{ borderRadius: 16, overflow: 'hidden', boxShadow: 'var(--shadow-md)', border: '1px solid var(--border)' }}>
+              <ColoradoStartupMapGoogle />
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
   );
 }
