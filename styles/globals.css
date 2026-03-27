@@ -197,6 +197,35 @@ a:hover{
   margin-top:48px;
 }
 
+.about-split{
+  align-items:start;
+  margin-top:24px;
+}
+
+.about-panel{
+  margin-top:0;
+}
+
+.about-panel p{
+  margin-top:24px;
+  margin-bottom:0;
+  line-height:1.35;
+}
+
+.about-panel p + p{
+  margin-top:14px;
+}
+
+.about-panel ul{
+  margin-top:24px;
+  padding-left:24px;
+}
+
+.about-panel li{
+  margin-bottom:10px;
+  line-height:1.35;
+}
+
 /* Bold Dynamic Cards */
 .grid{
   display:grid;
@@ -833,11 +862,16 @@ a:hover{
 }
 
 .stat-label{
-  font-size:16px;
-  color:var(--text-secondary);
-  font-weight:600;
+  font-size:clamp(22px, 2.6vw, 34px);
+  font-weight:800;
+  background:linear-gradient(135deg, var(--brand-accent) 0%, var(--accent-primary) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
   letter-spacing:0.02em;
   margin:0;
+  line-height:1.2;
+  font-family:'Playfair Display', sans-serif;
 }
 
 /* Testimonials Section */
@@ -953,17 +987,22 @@ a:hover{
   text-align:center;
 }
 
-.membership-section h2{
-  color:#ffffff;
-  margin-bottom:16px;
+.membership-intro{
+  max-width:920px;
+  margin:0 auto 34px;
 }
 
-.membership-section > .membership-content > p{
+.membership-section h2{
+  color:#ffffff;
+  margin-bottom:20px;
+}
+
+.membership-section .membership-intro > p{
   color:rgba(255,255,255,0.85);
-  max-width:700px;
-  margin:0 auto 48px;
+  max-width:900px;
+  margin:0 auto;
   font-size:18px;
-  line-height:1.7;
+  line-height:1.6;
 }
 
 .membership-grid{
@@ -972,6 +1011,11 @@ a:hover{
   gap:28px;
   max-width:1000px;
   margin:0 auto;
+}
+
+.membership-cta{
+  margin-top:34px;
+  text-align:center;
 }
 
 .membership-card{

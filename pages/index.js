@@ -39,19 +39,16 @@ export default function Home({ ventures = [] }) {
             <div className="stats-grid">
               <ScrollReveal>
                 <div className="stat-card">
-                  <div className="stat-number">15+</div>
                   <div className="stat-label">Seeking Active Ventures</div>
                 </div>
               </ScrollReveal>
               <ScrollReveal delay={100}>
                 <div className="stat-card">
-                  <div className="stat-number">200+</div>
                   <div className="stat-label">Vast Entrepreneurial Network</div>
                 </div>
               </ScrollReveal>
               <ScrollReveal delay={200}>
                 <div className="stat-card">
-                  <div className="stat-number">$500K+</div>
                   <div className="stat-label">Seeking Funding Actively</div>
                 </div>
               </ScrollReveal>
@@ -60,16 +57,22 @@ export default function Home({ ventures = [] }) {
         </section>
 
         <section id="about" className="section container">
-          <div className="split">
+          <div className="split about-split">
             <ScrollReveal>
-              <div>
+              <div className="about-panel about-left">
                 <h2>About</h2>
-                <p>Ram Ventures is a University incubator at Colorado State focused on helping students build teams, launch startups, and connect with mentors and investors across Northern Colorado.</p>
+                <p>
+                  Ram Ventures is a University incubator at Colorado State focused on helping students build teams, launch startups, and connect with mentors and investors across Northern Colorado.
+                </p>
+                <p>
+                  Ram Ventures aims to be the "connective tissue" for entrepreneurial and driven undergraduate venture ideas, driving collaboration across all 8 CSU colleges.
+                </p>
               </div>
             </ScrollReveal>
+
             <ScrollReveal delay={150}>
-              <div>
-                <h3>Our focus</h3>
+              <div className="about-panel about-right">
+                <h2>Our Focus</h2>
                 <ul>
                   <li>Student startups & senior design projects</li>
                   <li>Mentorship and office hours</li>
@@ -87,7 +90,7 @@ export default function Home({ ventures = [] }) {
         <section id="membership" className="section container membership-section">
           <div className="membership-content">
             <ScrollReveal>
-              <div>
+              <div className="membership-intro">
                 <h2>Join Our Community</h2>
                 <p>Join Ram Ventures as a founder, mentor, or supporter and help build a stronger startup ecosystem at Colorado State.</p>
               </div>
@@ -112,7 +115,7 @@ export default function Home({ ventures = [] }) {
                 </div>
               </ScrollReveal>
             </div>
-            <div style={{marginTop:48, textAlign:'center'}}>
+            <div className="membership-cta">
               <a href="https://docs.google.com/forms/d/e/1FAIpQLSfx49YqZRDpIq5sK-U-sA9KUJyoEXfLvVLl904g5L99FtUwtQ/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" className="button">Apply to Join</a>
             </div>
           </div>
