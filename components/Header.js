@@ -38,6 +38,7 @@ export default function Header(){
         <Link href="/events" className="nav-item">Events</Link>
         <Link href="/gallery" className="nav-item">Gallery</Link>
         <a href="#membership" className="nav-item">Membership</a>
+        <Link href="/sprint" className="nav-item nav-apply">Apply</Link>
         <Link href="/admin" className="nav-item muted">Admin</Link>
       </nav>
     </header>
