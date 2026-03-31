@@ -1403,3 +1403,535 @@ a:hover{
   }
 }
 
+/* ─── Sprint / Apply page ─────────────────────────────────────────────────── */
+
+/* Nav apply highlight */
+.nav-apply{
+  background:linear-gradient(135deg, var(--brand-accent) 0%, var(--accent-primary) 100%);
+  color:#ffffff !important;
+  padding:8px 20px !important;
+  border-radius:8px;
+  font-weight:700 !important;
+  transition:all 0.3s ease !important;
+}
+.nav-apply:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 16px rgba(15,91,63,0.45);
+  color:#ffffff !important;
+}
+.nav-apply::before{
+  display:none !important;
+}
+
+/* Hero eyebrow */
+.sprint-eyebrow{
+  font-family:'Geist Mono', monospace;
+  font-size:12px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.6);
+  margin-bottom:24px;
+  position:relative;
+  z-index:1;
+}
+
+/* Deadline badge */
+.sprint-deadline-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:8px;
+  padding:10px 20px;
+  margin-top:32px;
+  font-size:14px;
+  color:rgba(255,255,255,0.8);
+  position:relative;
+  z-index:1;
+}
+
+/* Pulsing dot */
+.sprint-pulse-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#ff6b6b;
+  display:inline-block;
+  flex-shrink:0;
+  animation:sprint-pulse 2s infinite;
+}
+@keyframes sprint-pulse{
+  0%,100%{ opacity:1; box-shadow:0 0 8px rgba(255,107,107,0.6); }
+  50%{ opacity:0.6; box-shadow:0 0 18px rgba(255,107,107,0.9); }
+}
+
+/* Stats strip */
+.sprint-stats-strip{
+  background:linear-gradient(180deg, rgba(15,91,63,0.05) 0%, rgba(15,91,63,0.02) 100%);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:40px 48px;
+}
+.sprint-stats-inner{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  max-width:900px;
+  margin:0 auto;
+  flex-wrap:wrap;
+}
+.sprint-stat{
+  display:flex;
+  align-items:center;
+  flex:1;
+  min-width:130px;
+}
+.sprint-stat-divider{
+  width:1px;
+  height:48px;
+  background:var(--border);
+  flex-shrink:0;
+}
+.sprint-stat-content{
+  flex:1;
+  text-align:center;
+  padding:0 24px;
+}
+.sprint-stat-label{
+  font-family:'Geist Mono', monospace;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  color:var(--text-light);
+  margin-top:6px;
+}
+
+/* Section label (mono tag above headings) */
+.sprint-section-label{
+  font-family:'Geist Mono', monospace;
+  font-size:12px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--brand-accent);
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.sprint-section-label::before{
+  content:'';
+  width:24px;
+  height:2px;
+  background:linear-gradient(90deg, var(--brand-accent), var(--accent-primary));
+  border-radius:1px;
+  display:inline-block;
+  flex-shrink:0;
+}
+
+/* Section subtitle */
+.sprint-section-sub{
+  font-size:18px;
+  color:var(--text-secondary);
+  margin:8px 0 48px 0;
+  font-weight:400;
+  max-width:640px;
+  line-height:1.65;
+}
+
+/* AtmosZero client card */
+.sprint-client-card{
+  background:var(--bg-alt);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:40px;
+  margin:0 0 32px 0;
+  display:flex;
+  gap:40px;
+  align-items:flex-start;
+  flex-wrap:wrap;
+}
+.sprint-client-logo-placeholder{
+  width:200px;
+  height:80px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.sprint-client-logo-placeholder span{
+  font-family:'Geist Mono', monospace;
+  font-size:13px;
+  color:var(--text-light);
+  letter-spacing:2px;
+}
+.sprint-client-narrative{
+  flex:1;
+  min-width:280px;
+  font-size:16px;
+  line-height:1.85;
+  color:var(--text-secondary);
+  margin:0;
+}
+
+/* Credential badges */
+.sprint-credentials{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-bottom:24px;
+}
+.sprint-credential-badge{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:16px 24px;
+  text-align:center;
+  flex:1 1 auto;
+  min-width:110px;
+  box-shadow:var(--shadow-sm);
+  transition:all 0.3s ease;
+}
+.sprint-credential-badge:hover{
+  border-color:var(--brand-accent);
+  transform:translateY(-2px);
+}
+.sprint-cred-num{
+  font-family:'Playfair Display', serif;
+  font-size:20px;
+  font-weight:800;
+  background:linear-gradient(135deg, var(--brand-accent), var(--accent-primary));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  line-height:1;
+  margin-bottom:6px;
+}
+.sprint-cred-label{
+  font-family:'Geist Mono', monospace;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:var(--text-light);
+}
+
+/* Investor row */
+.sprint-investors{
+  background:var(--bg-alt);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:24px 32px;
+  margin-bottom:24px;
+}
+.sprint-investors-label{
+  font-family:'Geist Mono', monospace;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  color:var(--text-light);
+  margin-bottom:16px;
+  text-align:center;
+}
+.sprint-investors-row{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.sprint-investor-pill{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:8px 16px;
+  font-family:'Geist Mono', monospace;
+  font-size:11px;
+  color:var(--text-secondary);
+  letter-spacing:0.5px;
+}
+
+/* Closing quote */
+.sprint-closing-quote{
+  border-left:4px solid var(--brand-accent);
+  padding-left:20px;
+  font-size:16px;
+  color:var(--text-secondary);
+  font-style:italic;
+  line-height:1.75;
+  margin:0;
+}
+
+/* Roles grid */
+.sprint-roles-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));
+  gap:32px;
+  margin-top:48px;
+}
+.sprint-role-card{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.sprint-role-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+.sprint-spots-badge{
+  font-family:'Geist Mono', monospace;
+  font-size:11px;
+  color:var(--brand-accent);
+  background:rgba(15,91,63,0.08);
+  border:1px solid rgba(15,91,63,0.2);
+  border-radius:6px;
+  padding:4px 10px;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.sprint-tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:4px;
+}
+.sprint-tag{
+  font-family:'Geist Mono', monospace;
+  font-size:11px;
+  padding:4px 10px;
+  border-radius:6px;
+  background:var(--panel);
+  color:var(--text-light);
+  border:1px solid var(--border);
+}
+.sprint-tag.primary{
+  background:rgba(15,91,63,0.08);
+  color:var(--brand-accent);
+  border-color:rgba(15,91,63,0.2);
+  font-weight:600;
+}
+
+/* Timeline */
+.sprint-timeline{
+  position:relative;
+  padding-left:32px;
+  margin-top:56px;
+}
+.sprint-timeline::before{
+  content:'';
+  position:absolute;
+  left:7px;
+  top:0;
+  bottom:0;
+  width:2px;
+  background:linear-gradient(to bottom, var(--brand-accent), var(--border));
+  border-radius:1px;
+}
+.sprint-timeline-item{
+  position:relative;
+  margin-bottom:48px;
+  padding-left:24px;
+}
+.sprint-tl-dot{
+  position:absolute;
+  left:-32px;
+  top:4px;
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:var(--bg);
+  border:2px solid var(--border);
+  transition:all 0.3s ease;
+}
+.sprint-timeline-item.active .sprint-tl-dot{
+  background:var(--brand-accent);
+  border-color:var(--brand-accent);
+  box-shadow:0 0 14px rgba(15,91,63,0.5);
+}
+.sprint-tl-date{
+  font-family:'Geist Mono', monospace;
+  font-size:11px;
+  color:var(--brand-accent);
+  margin-bottom:6px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+.sprint-tl-title{
+  font-size:17px;
+  font-weight:700;
+  color:var(--text-color);
+  margin:0 0 8px 0;
+  font-family:'Playfair Display', serif;
+  letter-spacing:-0.02em;
+}
+.sprint-tl-desc{
+  font-size:14px;
+  color:var(--text-secondary);
+  margin:0;
+  line-height:1.75;
+}
+
+/* Partners */
+.sprint-partners-row{
+  display:flex;
+  gap:24px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:32px;
+}
+.sprint-partner-tile{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  opacity:0.6;
+  transition:opacity 0.2s;
+  cursor:default;
+}
+.sprint-partner-tile:hover{
+  opacity:1;
+}
+.sprint-partner-logo{
+  width:96px;
+  height:64px;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Geist Mono', monospace;
+  font-size:14px;
+  font-weight:700;
+  color:var(--brand-accent);
+  box-shadow:var(--shadow-sm);
+  overflow:hidden;
+  padding:6px;
+}
+.sprint-partner-name{
+  font-family:'Geist Mono', monospace;
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:var(--text-light);
+  text-align:center;
+  max-width:90px;
+}
+
+/* Advisors */
+.sprint-advisor-card{
+  display:flex;
+  gap:20px;
+  align-items:flex-start;
+}
+.sprint-advisor-avatar{
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  border:2px solid var(--border);
+  background:linear-gradient(135deg, rgba(15,91,63,0.15), var(--panel));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Geist Mono', monospace;
+  font-size:16px;
+  font-weight:700;
+  color:var(--brand-accent);
+  flex-shrink:0;
+  overflow:hidden;
+  position:relative;
+}
+.sprint-advisor-role{
+  font-family:'Geist Mono', monospace;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:var(--brand-accent);
+  margin-top:2px;
+}
+
+/* FAQ */
+.sprint-faq-item{
+  border-bottom:1px solid var(--border);
+  padding:20px 0;
+}
+.sprint-faq-btn{
+  width:100%;
+  background:none;
+  border:none;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  padding:0;
+  text-align:left;
+  font-family:'Geist', sans-serif;
+  font-size:16px;
+  font-weight:600;
+  color:var(--text-color);
+}
+.sprint-faq-btn:hover{
+  color:var(--brand-accent);
+}
+.sprint-faq-icon{
+  color:var(--brand-accent);
+  font-size:22px;
+  flex-shrink:0;
+  transition:transform 0.25s;
+  line-height:1;
+}
+.sprint-faq-icon.open{
+  transform:rotate(45deg);
+}
+.sprint-faq-body{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.35s ease;
+}
+.sprint-faq-body.open{
+  max-height:400px;
+}
+.sprint-faq-body p{
+  font-size:15px;
+  color:var(--text-secondary);
+  margin:14px 0 0 0;
+  line-height:1.8;
+}
+
+/* Sprint responsive */
+@media(max-width:900px){
+  .sprint-client-card{
+    flex-direction:column;
+    gap:24px;
+  }
+  .sprint-client-logo-placeholder{
+    width:100%;
+  }
+  .sprint-credentials{
+    gap:12px;
+  }
+  .sprint-roles-grid{
+    grid-template-columns:1fr;
+  }
+  .sprint-stats-strip{
+    padding:32px 24px;
+  }
+  .sprint-timeline{
+    padding-left:24px;
+  }
+}
+@media(max-width:480px){
+  .sprint-credentials{
+    gap:8px;
+  }
+  .sprint-credential-badge{
+    min-width:calc(50% - 4px);
+  }
+  .sprint-partners-row{
+    gap:16px;
+  }
+}
