@@ -201,7 +201,14 @@ export default function SprintPage() {
         body: JSON.stringify(form)
       })
 
-      const data = await res.json()
+      const raw = await res.text()
+      let data = {}
+      try {
+        data = raw ? JSON.parse(raw) : {}
+      } catch {
+        data = { error: raw || 'Unexpected response from server.' }
+      }
+
       if (!res.ok) throw new Error(data?.error || 'Failed to submit application.')
 
       setIsError(false)

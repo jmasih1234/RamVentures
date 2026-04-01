@@ -50,8 +50,19 @@ async function sendApplicationNotification(application) {
 }
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    const body = req.body || {}
+  const hasSupabaseConfig = Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  )
+
+  try {
+    if (!hasSupabaseConfig) {
+      return res.status(500).json({
+        error: 'Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to environment settings.'
+      })
+    }
+
+    if (req.method === 'POST') {
+      const body = req.body || {}
 
     const payload = {
       full_name: normalizeText(body.full_name),
@@ -82,55 +93,58 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Please provide a valid email.' })
     }
 
-    const { data, error } = await supabase.from('project_applications').insert([payload]).select('*').single()
-    if (error) return res.status(500).json({ error: error.message })
+      const { data, error } = await supabase.from('project_applications').insert([payload]).select('*').single()
+      if (error) return res.status(500).json({ error: error.message })
 
-    try {
-      await sendApplicationNotification(payload)
-    } catch {
-      // Non-blocking notification failure.
+      try {
+        await sendApplicationNotification(payload)
+      } catch {
+        // Non-blocking notification failure.
+      }
+
+      return res.status(200).json({ message: 'Application submitted successfully.', data })
     }
 
-    return res.status(200).json({ message: 'Application submitted successfully.', data })
-  }
+    if (req.method === 'GET') {
+      const { data, error } = await supabase
+        .from('project_applications')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(100)
 
-  if (req.method === 'GET') {
-    const { data, error } = await supabase
-      .from('project_applications')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(100)
-
-    if (error) return res.status(500).json({ error: error.message })
-    return res.status(200).json({ data: data || [] })
-  }
-
-  if (req.method === 'PATCH') {
-    const id = normalizeText(req.body?.id)
-    const status = normalizeText(req.body?.status)
-    const admin_response = normalizeText(req.body?.admin_response)
-
-    if (!id) return res.status(400).json({ error: 'Application id is required.' })
-
-    const allowed = ['new', 'reviewing', 'accepted', 'waitlisted', 'declined']
-    if (status && !allowed.includes(status)) {
-      return res.status(400).json({ error: 'Invalid status value.' })
+      if (error) return res.status(500).json({ error: error.message })
+      return res.status(200).json({ data: data || [] })
     }
 
-    const updatePayload = {}
-    if (status) updatePayload.status = status
-    if (typeof req.body?.admin_response === 'string') updatePayload.admin_response = admin_response
+    if (req.method === 'PATCH') {
+      const id = normalizeText(req.body?.id)
+      const status = normalizeText(req.body?.status)
+      const admin_response = normalizeText(req.body?.admin_response)
 
-    const { data, error } = await supabase
-      .from('project_applications')
-      .update(updatePayload)
-      .eq('id', id)
-      .select('*')
-      .single()
+      if (!id) return res.status(400).json({ error: 'Application id is required.' })
 
-    if (error) return res.status(500).json({ error: error.message })
-    return res.status(200).json({ message: 'Application updated.', data })
+      const allowed = ['new', 'reviewing', 'accepted', 'waitlisted', 'declined']
+      if (status && !allowed.includes(status)) {
+        return res.status(400).json({ error: 'Invalid status value.' })
+      }
+
+      const updatePayload = {}
+      if (status) updatePayload.status = status
+      if (typeof req.body?.admin_response === 'string') updatePayload.admin_response = admin_response
+
+      const { data, error } = await supabase
+        .from('project_applications')
+        .update(updatePayload)
+        .eq('id', id)
+        .select('*')
+        .single()
+
+      if (error) return res.status(500).json({ error: error.message })
+      return res.status(200).json({ message: 'Application updated.', data })
+    }
+
+    return res.status(405).json({ error: 'Method not allowed' })
+  } catch (error) {
+    return res.status(500).json({ error: error?.message || 'Internal Server Error' })
   }
-
-  return res.status(405).json({ error: 'Method not allowed' })
 }
