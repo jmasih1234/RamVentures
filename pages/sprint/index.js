@@ -163,6 +163,33 @@ const ADVISORS = [
 ]
 
 export default function SprintPage() {
+  return (
+    <>
+      <Head>
+        <title>Apply | Ram Ventures</title>
+        <meta name="description" content="Apply page coming soon." />
+      </Head>
+
+      <Header />
+
+      <section className="page-hero">
+        <div className="container" style={{ textAlign: 'center' }}>
+          <h1 className="page-title">Real Consulting Projects — Coming Soon</h1>
+          <p className="page-subtitle">We’re preparing the next cycle of real consulting projects. Please check back soon.</p>
+        </div>
+      </section>
+
+      <main style={{ paddingTop: 0 }} />
+
+      <footer className="site-footer">
+        <div className="container">
+          <div className="footer-left">© {new Date().getFullYear()} Ram Ventures</div>
+          <div className="footer-right">Apply</div>
+        </div>
+      </footer>
+    </>
+  )
+
   const daysLeft = useCountdown()
 
   return (

@@ -1,30 +1,35 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 const coloradoStartups = [
-  { id: 1, name: 'AEMS Corp', location: 'Fort Collins, CO', lat: 40.5853, lng: -105.0844, description: 'CSU Spur graduate with ag-tech innovation expertise', stage: 'Growth', contact: 'Dr. W. Scott Compel', generalContact: 'Contact via aemscorp.com', linkedin: 'https://linkedin.com/in/scott-compel', website: 'aemscorp.com' },
-  { id: 2, name: 'AgriWebb', location: 'Denver, CO', lat: 39.7392, lng: -104.9903, description: 'Livestock management software. 17.5M animals, 12K users globally.', stage: 'Growth', contact: 'Kevin Baum', generalContact: 'Contact via agriwebb.com', linkedin: 'https://linkedin.com/in/kevin-baum', website: 'agriwebb.com' },
-  { id: 3, name: 'AtmosZero', location: 'Fort Collins, CO', lat: 40.5928, lng: -105.0833, description: 'Electrified boiler technology producing decarbonized steam.', stage: 'Seed', contact: 'General Contact', generalContact: 'Contact via atmoszero.energy', linkedin: 'Not publicly listed', website: 'atmoszero.energy' },
-  { id: 4, name: 'Axiota Animal Health', location: 'Fort Collins, CO', lat: 40.5892, lng: -105.0901, description: 'Animal health products for beef and dairy producers.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via axiota.com', linkedin: 'Not publicly listed', website: 'axiota.com' },
-  { id: 5, name: 'Barn Owl Tech', location: 'Colorado Springs, CO', lat: 38.8339, lng: -104.8202, description: 'IoT/ag-tech for producers. 7K+ customers, 250% growth.', stage: 'Growth', contact: 'Josh Phifer', generalContact: 'Contact via barnowl.tech', linkedin: 'https://www.linkedin.com/in/joshdphifer/', website: 'barnowl.tech' },
-  { id: 6, name: 'BillGO', location: 'Fort Collins, CO', lat: 40.5835, lng: -105.0797, description: 'Modern bill management and payments platform for banks, fintechs, and billers.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via billgo.com', linkedin: 'Not publicly listed', website: 'billgo.com' },
-  { id: 7, name: 'Cloud Agronomics', location: 'Boulder, CO', lat: 40.015, lng: -105.2705, description: 'Remote soil carbon measurement. Climate-smart agriculture focus.', stage: 'Series A', contact: 'Mark Tracy', generalContact: 'Contact via cloudagronomics.com', linkedin: 'https://linkedin.com/in/mark-tracy', website: 'cloudagronomics.com' },
-  { id: 8, name: 'Compost Colorado', location: 'Denver, CO', lat: 39.7392, lng: -104.9903, description: 'Employee-owned PBC. Denver\'s first commercial composting facility.', stage: 'Growth', contact: 'Vann Fussell', generalContact: 'commercial@compost-colorado.com', linkedin: 'https://linkedin.com/in/vann-fussell', website: 'compost-colorado.com' },
-  { id: 9, name: 'Compost Queen', location: 'Fort Collins, CO', lat: 40.5853, lng: -105.0844, description: 'Local Fort Collins composting. 700 tons/year capacity.', stage: 'Growth', contact: 'Jamie Blanchard-Poling', generalContact: 'Contact via compostqueenfc.com', linkedin: 'https://linkedin.com/in/jamie-blanchard-poling', website: 'compostqueenfc.com' },
-  { id: 10, name: 'Farmbrite', location: 'Hygiene, CO', lat: 40.3183, lng: -105.2236, description: 'Farm management SaaS. 4K+ users. Bootstrap success story.', stage: 'Growth', contact: 'Ian & Janine Russell', generalContact: 'hello@farmbrite.com', linkedin: 'https://linkedin.com/in/ian-russell-farmbrite', website: 'farmbrite.com' },
-  { id: 11, name: 'FoodMaven', location: 'Denver, CO', lat: 39.7392, lng: -104.9903, description: 'B2B surplus food marketplace. $39.6M raised. Food waste solutions.', stage: 'Series C', contact: 'General Contact', generalContact: 'Contact via foodmaven.com', linkedin: 'https://linkedin.com/company/foodmaven', website: 'foodmaven.com' },
-  { id: 12, name: 'Growcentia', location: 'Loveland, CO', lat: 40.3937, lng: -105.0039, description: 'CSU-licensed soil science technology for sustainable agriculture', stage: 'Growth', contact: 'Scott Wiley', generalContact: 'scott@growcentia.com', linkedin: 'https://linkedin.com/in/scott-wiley-growcentia', website: 'growcentia.com' },
-  { id: 13, name: 'Infinite Harvest', location: 'Lakewood, CO', lat: 39.7294, lng: -105.0662, description: 'Indoor vertical farming. 30+ Whole Foods locations.', stage: 'Growth', contact: 'Jim Romano', generalContact: 'Contact via infinite-harvest.com', linkedin: 'https://linkedin.com/in/jim-romano', website: 'infinite-harvest.com' },
-  { id: 14, name: 'Innosphere Ventures', location: 'Fort Collins, CO', lat: 40.5853, lng: -105.0844, description: '201+ investments, $1.2B raised. CSU partnership & bioscience lab.', stage: 'Active', contact: 'Mike Freeman', generalContact: 'mfreeman@innosphereventures.org', linkedin: 'https://www.linkedin.com/in/mikeafreeman/', website: 'innosphereventures.org' },
-  { id: 15, name: 'KLOwen Braces', location: 'Fort Collins, CO', lat: 40.5901, lng: -105.0781, description: 'Orthodontic technology with prefabricated modular braces systems.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via klowenbraces.com', linkedin: 'Not publicly listed', website: 'klowenbraces.com' },
-  { id: 16, name: 'Mad Agriculture', location: 'Boulder, CO', lat: 40.015, lng: -105.2705, description: 'Regenerative agriculture education & implementation programs.', stage: 'Growth', contact: 'Philip Taylor, PhD', generalContact: 'Contact via madagriculture.org', linkedin: 'https://www.linkedin.com/in/philipgrahamtaylor/', website: 'madagriculture.org' },
-  { id: 17, name: 'Madwire', location: 'Fort Collins, CO', lat: 40.5799, lng: -105.0735, description: 'Marketing and CRM platform helping small businesses grow online.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via madwire.com', linkedin: 'Not publicly listed', website: 'madwire.com' },
-  { id: 18, name: 'New West Genetics', location: 'Fort Collins, CO', lat: 40.5853, lng: -105.0844, description: 'Hemp genetics and crop innovation from CSU faculty expertise', stage: 'Growth', contact: 'Wendy Mosher', generalContact: 'wmosher@newwestgenetics.com', linkedin: 'https://www.linkedin.com/in/wmosher/', website: 'newwestgenetics.com' },
-  { id: 19, name: 'Prieto Battery', location: 'Fort Collins, CO', lat: 40.5818, lng: -105.0887, description: 'Advanced battery company with origins in CSU\'s energy innovation ecosystem.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via prietobattery.com', linkedin: 'Not publicly listed', website: 'prietobattery.com' },
-  { id: 20, name: 'Rooted Robotics', location: 'Boulder, CO', lat: 40.015, lng: -105.2705, description: 'Indoor farming automation. Raising $1M, $100K+ sold globally.', stage: 'Seed', contact: 'Max Knight', generalContact: 'Contact via rootedrobotics.com', linkedin: 'https://linkedin.com/in/max-knight', website: 'rootedrobotics.com' },
-  { id: 21, name: 'Secure64', location: 'Fort Collins, CO', lat: 40.5764, lng: -105.0863, description: 'Carrier-grade DNS and network security software for critical infrastructure.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via secure64.com', linkedin: 'Not publicly listed', website: 'secure64.com' },
-  { id: 22, name: 'SWIIM System', location: 'Denver, CO', lat: 39.7392, lng: -104.9903, description: 'Irrigation optimization. Forbes top 25 ag-tech. 70K+ acres deployed.', stage: 'Series B', contact: 'Kevin France', generalContact: 'Contact via swiim.com', linkedin: 'https://www.linkedin.com/in/kevin-france/', website: 'swiim.com' },
-  { id: 23, name: 'The Food Corridor', location: 'Fort Collins, CO', lat: 40.584, lng: -105.0718, description: 'Platform for finding, booking, and paying for commercial kitchen space.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via thefoodcorridor.com', linkedin: 'Not publicly listed', website: 'thefoodcorridor.com' },
-  { id: 24, name: 'TurboTenant', location: 'Fort Collins, CO', lat: 40.5878, lng: -105.0849, description: 'Rental management software for tenant screening, payments, and listings.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via turbotenant.com', linkedin: 'Not publicly listed', website: 'turbotenant.com' }
+  { id: 1, name: 'AEMS Corp', location: 'Fort Collins, CO', lat: 40.5519, lng: -105.0789, description: 'CSU-linked ag-tech innovation company focused on engineering solutions.', stage: 'Growth', contact: 'Dr. W. Scott Compel', generalContact: 'Contact via aemscorp.com', linkedin: 'https://linkedin.com/in/scott-compel', website: 'aemscorp.com' },
+  { id: 2, name: 'AtmosZero', location: 'Fort Collins, CO', lat: 40.5538, lng: -105.0825, description: 'Electrified boiler technology producing decarbonized steam.', stage: 'Seed', contact: 'General Contact', generalContact: 'Contact via atmoszero.energy', linkedin: 'Not publicly listed', website: 'atmoszero.energy' },
+  { id: 3, name: 'Axiota Animal Health', location: 'Fort Collins, CO', lat: 40.5478, lng: -105.0749, description: 'Animal health products for beef and dairy producers.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via axiota.com', linkedin: 'Not publicly listed', website: 'axiota.com' },
+  { id: 4, name: 'BillGO', location: 'Fort Collins, CO', lat: 40.5592, lng: -105.0482, description: 'Modern bill management and payments platform for banks, fintechs, and billers.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via billgo.com', linkedin: 'Not publicly listed', website: 'billgo.com' },
+  { id: 5, name: 'Compost Queen', location: 'Fort Collins, CO', lat: 40.5738, lng: -105.0641, description: 'Local Fort Collins composting with circular economy focus.', stage: 'Growth', contact: 'Jamie Blanchard-Poling', generalContact: 'Contact via compostqueenfc.com', linkedin: 'https://linkedin.com/in/jamie-blanchard-poling', website: 'compostqueenfc.com' },
+  { id: 6, name: 'Farmbrite', location: 'Longmont, CO', lat: 40.1804, lng: -105.1019, description: 'Farm management SaaS used by diversified producers globally.', stage: 'Growth', contact: 'Ian & Janine Russell', generalContact: 'hello@farmbrite.com', linkedin: 'https://linkedin.com/in/ian-russell-farmbrite', website: 'farmbrite.com' },
+  { id: 7, name: 'Growcentia', location: 'Loveland, CO', lat: 40.4236, lng: -105.0748, description: 'CSU-licensed soil science technology for sustainable agriculture.', stage: 'Growth', contact: 'Scott Wiley', generalContact: 'scott@growcentia.com', linkedin: 'https://linkedin.com/in/scott-wiley-growcentia', website: 'growcentia.com' },
+  { id: 8, name: 'Innosphere Ventures', location: 'Fort Collins, CO', lat: 40.5239, lng: -105.0672, description: 'Northern Colorado venture platform supporting startup acceleration.', stage: 'Active', contact: 'Mike Freeman', generalContact: 'mfreeman@innosphereventures.org', linkedin: 'https://www.linkedin.com/in/mikeafreeman/', website: 'innosphereventures.org' },
+  { id: 9, name: 'KLOwen Braces', location: 'Fort Collins, CO', lat: 40.5298, lng: -105.0576, description: 'Orthodontic technology with prefabricated modular brace systems.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via klowenbraces.com', linkedin: 'Not publicly listed', website: 'klowenbraces.com' },
+  { id: 10, name: 'Madwire', location: 'Fort Collins, CO', lat: 40.5679, lng: -105.0336, description: 'Marketing and CRM platform helping small businesses grow online.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via madwire.com', linkedin: 'Not publicly listed', website: 'madwire.com' },
+  { id: 11, name: 'New West Genetics', location: 'Fort Collins, CO', lat: 40.5751, lng: -105.0763, description: 'Hemp genetics and crop innovation company with CSU roots.', stage: 'Growth', contact: 'Wendy Mosher', generalContact: 'wmosher@newwestgenetics.com', linkedin: 'https://www.linkedin.com/in/wmosher/', website: 'newwestgenetics.com' },
+  { id: 12, name: 'Prieto Battery', location: 'Fort Collins, CO', lat: 40.5454, lng: -105.1028, description: 'Advanced battery company from CSU\'s energy innovation ecosystem.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via prietobattery.com', linkedin: 'Not publicly listed', website: 'prietobattery.com' },
+  { id: 13, name: 'Secure64', location: 'Fort Collins, CO', lat: 40.5368, lng: -105.0766, description: 'Carrier-grade DNS and network security software for critical infrastructure.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via secure64.com', linkedin: 'Not publicly listed', website: 'secure64.com' },
+  { id: 14, name: 'The Food Corridor', location: 'Fort Collins, CO', lat: 40.5647, lng: -105.0468, description: 'Platform for finding, booking, and paying for commercial kitchen space.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via thefoodcorridor.com', linkedin: 'Not publicly listed', website: 'thefoodcorridor.com' },
+  { id: 15, name: 'TurboTenant', location: 'Fort Collins, CO', lat: 40.5486, lng: -105.0548, description: 'Rental management software for tenant screening, payments, and listings.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via turbotenant.com', linkedin: 'Not publicly listed', website: 'turbotenant.com' },
+  { id: 16, name: 'Engine', location: 'Denver, CO', lat: 39.7488, lng: -104.9957, description: 'Denver startup ecosystem platform focused on founder support and growth infrastructure.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via engine.xyz', linkedin: 'https://www.linkedin.com/company/engine/', website: 'engine.xyz' },
+  { id: 17, name: 'Legora', location: 'Denver, CO', lat: 39.7339, lng: -104.9872, description: 'Legal technology startup building modern tools for legal and compliance workflows.', stage: 'Seed', contact: 'General Contact', generalContact: 'Contact via legora.com', linkedin: 'https://www.linkedin.com/company/legora/', website: 'legora.com' },
+  { id: 18, name: 'Rooted Robotics', location: 'Boulder, CO', lat: 40.015, lng: -105.2705, description: 'Indoor farming automation company building robotics for controlled environment agriculture.', stage: 'Seed', contact: 'Max Knight', generalContact: 'Contact via rootedrobotics.com', linkedin: 'https://linkedin.com/in/max-knight', website: 'rootedrobotics.com' },
+  { id: 19, name: 'Lightning eMotors', location: 'Loveland, CO', lat: 40.4189, lng: -105.0325, description: 'Electric fleet vehicle technology and commercial EV powertrain solutions.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via lightningemotors.com', linkedin: 'https://www.linkedin.com/company/lightning-emotors/', website: 'lightningemotors.com' },
+  { id: 20, name: 'Ursa Major', location: 'Berthoud, CO', lat: 40.3096, lng: -105.0811, description: 'Aerospace propulsion company building rocket engines for defense and space applications.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via ursamajor.com', linkedin: 'https://www.linkedin.com/company/ursa-major-technologies/', website: 'ursamajor.com' },
+  { id: 21, name: 'Solid Power', location: 'Louisville, CO', lat: 39.9778, lng: -105.1319, description: 'Next-generation solid-state battery company for electric mobility.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via solidpowerbattery.com', linkedin: 'https://www.linkedin.com/company/solid-power-inc-/', website: 'solidpowerbattery.com' },
+  { id: 22, name: 'Sphero', location: 'Boulder, CO', lat: 40.0237, lng: -105.2556, description: 'EdTech and robotics company known for programmable robots used in STEM education.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via sphero.com', linkedin: 'https://www.linkedin.com/company/sphero/', website: 'sphero.com' },
+  { id: 23, name: 'Meati', location: 'Boulder, CO', lat: 40.0164, lng: -105.2775, description: 'Alternative protein startup producing mycelium-based food products.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via meati.com', linkedin: 'https://www.linkedin.com/company/meati-foods/', website: 'meati.com' },
+  { id: 24, name: 'Gloo', location: 'Boulder, CO', lat: 40.0178, lng: -105.2827, description: 'Technology platform supporting mission-driven communities with data and engagement tools.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via gloo.us', linkedin: 'https://www.linkedin.com/company/gloo/', website: 'gloo.us' },
+  { id: 25, name: 'Techstars Boulder', location: 'Boulder, CO', lat: 40.0171, lng: -105.2812, description: 'Startup accelerator supporting early-stage founders across sectors.', stage: 'Active', contact: 'General Contact', generalContact: 'Contact via techstars.com', linkedin: 'https://www.linkedin.com/company/techstars/', website: 'techstars.com' },
+  { id: 26, name: 'Homebot', location: 'Denver, CO', lat: 39.7503, lng: -104.999, description: 'Homeownership engagement platform for lenders, agents, and homeowners.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via homebot.ai', linkedin: 'https://www.linkedin.com/company/homebot/', website: 'homebot.ai' },
+  { id: 27, name: 'Guild', location: 'Denver, CO', lat: 39.7374, lng: -104.9865, description: 'Career mobility and workforce education platform for employers and employees.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via guild.com', linkedin: 'https://www.linkedin.com/company/guildeducation/', website: 'guild.com' },
+  { id: 28, name: 'Ibotta', location: 'Denver, CO', lat: 39.7412, lng: -104.9897, description: 'Performance marketing and retail media technology platform.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via ibotta.com', linkedin: 'https://www.linkedin.com/company/ibotta-inc-/', website: 'ibotta.com' },
+  { id: 29, name: 'Boom Supersonic', location: 'Broomfield, CO', lat: 39.9272, lng: -105.0867, description: 'Aerospace startup developing sustainable supersonic passenger aircraft.', stage: 'Growth', contact: 'General Contact', generalContact: 'Contact via boomsupersonic.com', linkedin: 'https://www.linkedin.com/company/boom-technology-inc/', website: 'boomsupersonic.com' }
 ];
 
 function loadGoogleMapsScript(apiKey) {
@@ -52,6 +57,7 @@ function loadGoogleMapsScript(apiKey) {
 
 export default function ColoradoStartupMapGoogle() {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+  const mapId = process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID;
   const [selectedStartup, setSelectedStartup] = useState(null);
   const [cityFilter, setCityFilter] = useState('All');
   const [industryFilter, setIndustryFilter] = useState('All industries');
@@ -62,36 +68,52 @@ export default function ColoradoStartupMapGoogle() {
   const mapRef = useRef(null);
   const markersRef = useRef([]);
 
-  const fortCollinsCount = useMemo(() => coloradoStartups.filter((s) => s.location.includes('Fort Collins')).length, []);
-  const denverCount = useMemo(() => coloradoStartups.filter((s) => s.location.includes('Denver')).length, []);
-  const boulderCount = useMemo(() => coloradoStartups.filter((s) => s.location.includes('Boulder')).length, []);
+  const cityOptions = useMemo(() => {
+    const cities = [...new Set(coloradoStartups.map((s) => s.location.split(',')[0].trim()))].sort((a, b) => a.localeCompare(b));
+    return ['All', ...cities];
+  }, []);
+
+  const cityStats = useMemo(() => {
+    return cityOptions
+      .filter((city) => city !== 'All')
+      .map((city) => ({
+        city,
+        count: coloradoStartups.filter((s) => s.location.includes(city)).length,
+      }))
+      .sort((a, b) => b.count - a.count || a.city.localeCompare(b.city));
+  }, [cityOptions]);
 
   const startupsWithIndustry = useMemo(() => {
     const industryByName = {
       'AEMS Corp': 'AgTech',
-      AgriWebb: 'AgTech SaaS',
       AtmosZero: 'Climate Tech',
       'Axiota Animal Health': 'Animal Health',
-      'Barn Owl Tech': 'AgTech IoT',
       BillGO: 'Fintech',
-      'Cloud Agronomics': 'Climate Tech',
-      'Compost Colorado': 'Circular Economy',
       'Compost Queen': 'Circular Economy',
       Farmbrite: 'AgTech SaaS',
-      FoodMaven: 'FoodTech',
       Growcentia: 'AgTech',
-      'Infinite Harvest': 'Controlled Environment Ag',
       'Innosphere Ventures': 'Venture Platform',
       'KLOwen Braces': 'HealthTech',
-      'Mad Agriculture': 'Regenerative Ag',
       Madwire: 'Marketing Tech',
       'New West Genetics': 'Ag-Biotech',
       'Prieto Battery': 'Energy',
-      'Rooted Robotics': 'Ag Robotics',
       Secure64: 'Cybersecurity',
-      'SWIIM System': 'WaterTech',
       'The Food Corridor': 'FoodTech',
       TurboTenant: 'PropTech',
+      Engine: 'Startup Platform',
+      Legora: 'Legal Tech',
+      'Rooted Robotics': 'Ag Robotics',
+      'Lightning eMotors': 'Mobility Tech',
+      'Ursa Major': 'Aerospace',
+      'Solid Power': 'Energy Storage',
+      Sphero: 'EdTech Robotics',
+      Meati: 'FoodTech',
+      Gloo: 'Community Tech',
+      'Techstars Boulder': 'Accelerator',
+      Homebot: 'PropTech',
+      Guild: 'Workforce Tech',
+      Ibotta: 'Retail Tech',
+      'Boom Supersonic': 'Aerospace',
     };
 
     return coloradoStartups.map((startup) => ({
@@ -121,13 +143,14 @@ export default function ColoradoStartupMapGoogle() {
   }, [startupsWithIndustry, cityFilter, industryFilter, searchTerm]);
 
   const locationPriority = {
-    'Colorado Springs': 0,
-    Denver: 1,
-    'Fort Collins': 2,
-    Loveland: 3,
-    Boulder: 4,
-    Lakewood: 5,
-    Hygiene: 6,
+    'Fort Collins': 0,
+    Loveland: 1,
+    Longmont: 2,
+    Boulder: 3,
+    Denver: 4,
+    Broomfield: 5,
+    Louisville: 6,
+    Berthoud: 7,
   };
 
   const sortedStartups = useMemo(() => {
@@ -172,6 +195,7 @@ export default function ColoradoStartupMapGoogle() {
           zoom: 7,
           mapTypeControl: false,
           streetViewControl: false,
+          ...(mapId ? { mapId } : {}),
         });
 
         const bounds = new window.google.maps.LatLngBounds();
@@ -213,7 +237,7 @@ export default function ColoradoStartupMapGoogle() {
         window.gm_authFailure = null;
       }
     };
-  }, [apiKey, sortedStartups]);
+  }, [apiKey, mapId, sortedStartups]);
 
   useEffect(() => {
     if (!selectedStartup || !mapRef.current) return;
@@ -226,8 +250,8 @@ export default function ColoradoStartupMapGoogle() {
       <div className="layout">
         <div className="mapPane">
           <div className="mapHeader">
-            <h2>CSU & Colorado Venture Map</h2>
-            <p>Live Google Map with startup markers</p>
+            <h3>Northern Colorado Startup Map</h3>
+            <p>Live map pinned across NoCo, Boulder, and Denver startup locations</p>
           </div>
           {useFallbackMap ? (
             <>
@@ -246,11 +270,11 @@ export default function ColoradoStartupMapGoogle() {
         </div>
 
         <div className="listPane">
-          <h2>Colorado Startup Directory</h2>
+          <h3 className="listTitle">Colorado Startup Directory</h3>
           <div className="stats">
-            <span>{fortCollinsCount} Fort Collins</span>
-            <span>{denverCount} Denver</span>
-            <span>{boulderCount} Boulder</span>
+            {cityStats.map((entry) => (
+              <span key={entry.city}>{entry.count} {entry.city}</span>
+            ))}
           </div>
 
           <input
@@ -261,19 +285,14 @@ export default function ColoradoStartupMapGoogle() {
           />
 
           <div className="filters">
-            {[
-              { label: 'NoCo startups', value: 'All' },
-              { label: 'Fort Collins', value: 'Fort Collins' },
-              { label: 'Denver', value: 'Denver' },
-              { label: 'Boulder', value: 'Boulder' },
-            ].map((city) => (
+            {cityOptions.map((city) => (
               <button
-                key={city.value}
+                key={city}
                 type="button"
-                className={`chip ${cityFilter === city.value ? 'activeChip' : ''}`}
-                onClick={() => setCityFilter(city.value)}
+                className={`chip ${cityFilter === city ? 'activeChip' : ''}`}
+                onClick={() => setCityFilter(city)}
               >
-                {city.label}
+                {city === 'All' ? 'All Startups' : city}
               </button>
             ))}
           </div>
@@ -339,7 +358,7 @@ export default function ColoradoStartupMapGoogle() {
           padding: 10px 12px;
           box-shadow: var(--shadow-sm);
         }
-        .mapHeader h2 { margin: 0; font-size: 16px; font-family: 'Playfair Display', serif; color: var(--text-color); }
+        .mapHeader h3 { margin: 0; font-size: 16px; font-family: 'Playfair Display', serif; color: var(--text-color); }
         .mapHeader p { margin: 2px 0 0; font-size: 12px; color: var(--text-secondary); }
         .map { width: 100%; height: 100%; }
         .error { height: 100%; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; color: #8a1f1f; background: #fff5f5; }
@@ -358,8 +377,14 @@ export default function ColoradoStartupMapGoogle() {
           line-height: 1.4;
         }
         .listPane { overflow-y: auto; padding: 18px; background: #fff; }
-        .listPane h2 { margin: 2px 0 10px; font-family: 'Playfair Display', serif; }
-        .stats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; color: #355a4d; font-size: 12px; }
+        .listTitle {
+          margin: 2px 0 10px;
+          font-family: 'Playfair Display', serif;
+          font-size: clamp(30px, 4vw, 46px);
+          line-height: 1.08;
+          letter-spacing: -0.02em;
+        }
+        .stats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; color: #355a4d; font-size: 12px; }
         .stats span { background: #edf6f1; border: 1px solid #d3e6dc; border-radius: 999px; padding: 4px 10px; }
         .search { width: 100%; border: 1px solid #d4e3dc; border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; font-size: 14px; }
         .search:focus { outline: none; border-color: var(--brand-accent); box-shadow: 0 0 0 3px rgba(15,91,63,0.1); }
@@ -393,6 +418,7 @@ export default function ColoradoStartupMapGoogle() {
         @media (max-width: 1024px) {
           .layout { grid-template-columns: 1fr; height: auto; }
           .mapPane { height: 360px; }
+          .listTitle { font-size: clamp(26px, 8vw, 40px); }
         }
       `}</style>
     </>

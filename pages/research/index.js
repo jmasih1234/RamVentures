@@ -53,7 +53,7 @@ export default function Research() {
       <footer className="site-footer">
         <div className="container">
           <div className="footer-left">© {new Date().getFullYear()} Ram Ventures</div>
-          <div className="footer-right">Built for students · <Link href="/admin">Admin</Link></div>
+          <div className="footer-right">Built for students · <Link href="/admin">Membership</Link></div>
         </div>
       </footer>
     </>

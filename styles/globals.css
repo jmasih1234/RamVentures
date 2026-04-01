@@ -600,6 +600,40 @@ a:hover{
   color:var(--text-color);
 }
 
+.highlights-marquee-wrap{
+  margin-top:48px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:#fff;
+  box-shadow:var(--shadow-sm);
+}
+
+.highlights-marquee-track{
+  display:flex;
+  gap:14px;
+  padding:14px;
+  width:max-content;
+}
+
+.highlight-card{
+  width:320px;
+  height:220px;
+  border-radius:12px;
+  overflow:hidden;
+  flex:0 0 auto;
+  border:1px solid rgba(15,91,63,0.08);
+  background:#f6f7f7;
+}
+
+.highlight-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
 .filters{
   display:flex;
   gap:16px;

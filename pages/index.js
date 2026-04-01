@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Header from '../components/Header'
 import ScrollReveal from '../components/ScrollReveal'
 
-export default function Home({ ventures = [] }) {
+export default function Home({ agathonHighlights = [] }) {
   return (
     <>
       <Header />
@@ -124,33 +124,23 @@ export default function Home({ ventures = [] }) {
         <section id="gallery" className="section alt container">
           <ScrollReveal>
             <div>
-              <h2>Featured Ventures</h2>
+              <h2>Ag-A-thon 2026 Highlights</h2>
             </div>
           </ScrollReveal>
-          <div className="gallery">
-            {ventures.length === 0 ? (
+          <div className="highlights-marquee-wrap">
+            {agathonHighlights.length === 0 ? (
               <div className="empty-state">
-                <h3>Ventures Coming Soon</h3>
-                <p>Check back soon for new ventures from CSU founders.</p>
+                <h3>Photos Coming Soon</h3>
+                <p>Ag-A-thon highlights will appear here soon.</p>
               </div>
             ) : (
-              ventures.map((v, i) => (
-                <ScrollReveal key={v.id} delay={i * 50}>
-                  <a href={`/ventures/${v.id}`} className="gallery-card">
-                    <div className="gallery-thumb">
-                      {v.logo_url ? (
-                        <img src={v.logo_url} alt={v.name} />
-                      ) : (
-                        <div className="thumb-fallback">{(v.name||'').split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase()}</div>
-                      )}
-                    </div>
-                    <div className="gallery-meta">
-                      <strong>{v.name}</strong>
-                      <div className="small muted">{v.majors || 'Student project'}</div>
-                    </div>
-                  </a>
-                </ScrollReveal>
-              ))
+              <div className="highlights-marquee-track" aria-label="Ag-A-thon 2026 photo strip">
+                {agathonHighlights.map((img) => (
+                  <div className="highlight-card" key={img.src}>
+                    <img src={img.src} alt={img.title} loading="lazy" />
+                  </div>
+                ))}
+              </div>
             )}
           </div>
         </section>
@@ -227,7 +217,7 @@ export default function Home({ ventures = [] }) {
       <footer className="site-footer">
         <div className="container">
           <div className="footer-left">© {new Date().getFullYear()} Ram Ventures</div>
-          <div className="footer-right">Built for students · <a href="/admin">Admin</a></div>
+          <div className="footer-right">Built for students · <a href="/admin">Membership</a></div>
         </div>
       </footer>
     </>
@@ -235,16 +225,55 @@ export default function Home({ ventures = [] }) {
 }
 
 export async function getServerSideProps(){
-  // fetch latest ventures from Supabase for the gallery
-  let ventures = []
+  let agathonHighlights = []
+
   try{
-    const supabase = (await import('../lib/supabaseClient')).default
-    if (supabase) {
-      const { data } = await supabase.from('ventures').select('*').order('created_at', { ascending: false }).limit(8)
-      ventures = data || []
+    const fs = await import('fs')
+    const path = await import('path')
+    const crypto = await import('crypto')
+    const albumDir = path.join(process.cwd(), 'public', 'gallery', 'agathon-2026')
+    const files = fs.readdirSync(albumDir)
+      .filter((file) => /\.(jpg|jpeg|png|webp)$/i.test(file))
+      .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
+
+    const getFrameNumber = (fileName) => {
+      const match = fileName.match(/(\d+)/)
+      return match ? Number(match[1]) : null
     }
+
+    const uniqueByHash = []
+    const seenHashes = new Set()
+
+    files.forEach((file) => {
+      const fullPath = path.join(albumDir, file)
+      const hash = crypto.createHash('md5').update(fs.readFileSync(fullPath)).digest('hex')
+      if (!seenHashes.has(hash)) {
+        seenHashes.add(hash)
+        uniqueByHash.push(file)
+      }
+    })
+
+    const MIN_FRAME_GAP = 4
+    const spaced = []
+    let lastFrame = null
+
+    uniqueByHash.forEach((file) => {
+      const frame = getFrameNumber(file)
+      if (frame === null || lastFrame === null || Math.abs(frame - lastFrame) >= MIN_FRAME_GAP) {
+        spaced.push(file)
+        if (frame !== null) lastFrame = frame
+      }
+    })
+
+    const selected = spaced.slice(0, 36)
+
+    agathonHighlights = selected.map((file, index) => ({
+      id: index + 1,
+      src: `/gallery/agathon-2026/${file}`,
+      title: `Ag-A-thon Highlight ${index + 1}`,
+    }))
   }catch(e){
-    console.warn('Could not load ventures for homepage', e.message)
+    console.warn('Could not load Ag-A-thon highlights for homepage', e.message)
   }
-  return { props: { ventures } }
+  return { props: { agathonHighlights } }
 }

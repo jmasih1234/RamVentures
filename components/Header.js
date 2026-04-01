@@ -33,13 +33,13 @@ export default function Header(){
       </div>
       <nav className="main-nav">
         <Link href="/ventures" className="nav-item">Ventures</Link>
-        <Link href="/startups" className="nav-item">Startups</Link>
+        <Link href="/startups" className="nav-item">Startups Map</Link>
+        <Link href="/benchmark" className="nav-item">Benchmark</Link>
         <Link href="/research" className="nav-item">Research</Link>
         <Link href="/events" className="nav-item">Events</Link>
         <Link href="/gallery" className="nav-item">Gallery</Link>
-        <a href="#membership" className="nav-item">Membership</a>
-        <Link href="/sprint" className="nav-item nav-apply">Apply</Link>
-        <Link href="/admin" className="nav-item muted">Admin</Link>
+        <Link href="/admin" className="nav-item">Membership</Link>
+        <Link href="/sprint" className="nav-item nav-apply">Apply for projects</Link>
       </nav>
     </header>
   )
