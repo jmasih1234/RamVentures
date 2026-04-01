@@ -166,6 +166,9 @@ export default function ColoradoStartupMapGoogle() {
     });
   }, [filteredStartups]);
 
+  const fortCollinsPlaceholderMap =
+    'https://www.openstreetmap.org/export/embed.html?bbox=-105.2600%2C40.4700%2C-104.9400%2C40.7000&layer=mapnik&marker=40.5853%2C-105.0844';
+
   useEffect(() => {
     const invalidPlaceholder =
       !apiKey ||
@@ -250,19 +253,23 @@ export default function ColoradoStartupMapGoogle() {
       <div className="layout">
         <div className="mapPane">
           <div className="mapHeader">
-            <h3>Northern Colorado Startup Map</h3>
-            <p>Live map pinned across NoCo, Boulder, and Denver startup locations</p>
+            <h3>{useFallbackMap ? 'Fort Collins Startup Map' : 'Northern Colorado Startup Map'}</h3>
+            <p>
+              {useFallbackMap
+                ? 'Placeholder view centered on Fort Collins while live pins load.'
+                : 'Live map pinned across NoCo, Boulder, and Denver startup locations'}
+            </p>
           </div>
           {useFallbackMap ? (
             <>
               <iframe
                 className="map"
-                src="https://www.google.com/maps?q=Fort+Collins,+Colorado&z=7&output=embed"
+                src={fortCollinsPlaceholderMap}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Colorado Fallback Map"
+                title="Fort Collins Placeholder Map"
               />
-              {mapError ? <div className="fallbackError">{mapError}</div> : null}
+              <div className="fallbackBadge">Placeholder map active</div>
             </>
           ) : (
             <div ref={mapNodeRef} className="map" />
@@ -362,19 +369,18 @@ export default function ColoradoStartupMapGoogle() {
         .mapHeader p { margin: 2px 0 0; font-size: 12px; color: var(--text-secondary); }
         .map { width: 100%; height: 100%; }
         .error { height: 100%; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; color: #8a1f1f; background: #fff5f5; }
-        .fallbackError {
+        .fallbackBadge {
           position: absolute;
-          left: 12px;
           right: 12px;
           bottom: 12px;
           z-index: 2;
-          border: 1px solid #f2c9b6;
-          background: rgba(255, 248, 244, 0.96);
-          color: #8a3b1f;
-          border-radius: 10px;
-          padding: 10px 12px;
+          border: 1px solid #d3e6dc;
+          background: rgba(255, 255, 255, 0.94);
+          color: #355a4d;
+          border-radius: 999px;
+          padding: 7px 11px;
           font-size: 12px;
-          line-height: 1.4;
+          font-weight: 600;
         }
         .listPane { overflow-y: auto; padding: 18px; background: #fff; }
         .listTitle {

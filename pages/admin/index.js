@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import ScrollReveal from '../../components/ScrollReveal'
 
@@ -7,6 +7,44 @@ export default function Membership() {
   const [msg, setMsg] = useState('')
   const [isError, setIsError] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [applications, setApplications] = useState([])
+  const [loadingApplications, setLoadingApplications] = useState(true)
+
+  useEffect(() => {
+    loadApplications()
+  }, [])
+
+  async function loadApplications() {
+    setLoadingApplications(true)
+    try {
+      const res = await fetch('/api/project-applications')
+      const data = await res.json()
+      if (!res.ok) throw new Error(data?.error || 'Failed to load applications.')
+      setApplications(data?.data || [])
+    } catch {
+      setApplications([])
+    } finally {
+      setLoadingApplications(false)
+    }
+  }
+
+  async function updateApplication(id, status, admin_response) {
+    try {
+      const res = await fetch('/api/project-applications', {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ id, status, admin_response })
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data?.error || 'Failed to update application.')
+
+      setApplications(prev => prev.map((item) => (
+        item.id === id ? data.data : item
+      )))
+    } catch {
+      // Keep UI stable even if update fails.
+    }
+  }
 
   async function submitVenture(e) {
     e.preventDefault()
@@ -112,6 +150,57 @@ export default function Membership() {
                 </a>
               </div>
             </ScrollReveal>
+          </div>
+
+          <div style={{ marginTop: 24 }}>
+            <div className="membership-card-admin">
+              <h2>Project Intake Responses</h2>
+              <p className="membership-copy">Review applications and add your response directly in the dashboard.</p>
+
+              {loadingApplications ? (
+                <p className="membership-copy">Loading applications…</p>
+              ) : applications.length === 0 ? (
+                <p className="membership-copy">No applications yet.</p>
+              ) : (
+                <div className="apps-list">
+                  {applications.map((app) => (
+                    <div key={app.id} className="app-item">
+                      <div className="app-header">
+                        <div>
+                          <h3>{app.full_name || 'Unnamed applicant'}</h3>
+                          <p className="membership-copy" style={{ margin: 0 }}>{app.email}</p>
+                        </div>
+                        <select
+                          value={app.status || 'new'}
+                          onChange={(e) => updateApplication(app.id, e.target.value, app.admin_response || '')}
+                        >
+                          <option value="new">New</option>
+                          <option value="reviewing">Reviewing</option>
+                          <option value="accepted">Accepted</option>
+                          <option value="waitlisted">Waitlisted</option>
+                          <option value="declined">Declined</option>
+                        </select>
+                      </div>
+
+                      <p><strong>Role Interest:</strong> {app.role_interest || 'N/A'}</p>
+                      <p><strong>Major:</strong> {app.major || 'N/A'} {app.graduation_year ? `(${app.graduation_year})` : ''}</p>
+                      <p><strong>Why Interested:</strong> {app.why_interested || 'N/A'}</p>
+
+                      <label htmlFor={`response-${app.id}`}>Admin Response</label>
+                      <textarea
+                        id={`response-${app.id}`}
+                        rows={3}
+                        value={app.admin_response || ''}
+                        onChange={(e) => setApplications(prev => prev.map((item) => item.id === app.id ? { ...item, admin_response: e.target.value } : item))}
+                      />
+                      <button type="button" onClick={() => updateApplication(app.id, app.status || 'new', app.admin_response || '')}>
+                        Save Response
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </section>
       </main>
@@ -245,6 +334,46 @@ export default function Membership() {
           color: #8b1f1f;
           background: rgba(184, 45, 45, 0.08);
           border-color: rgba(184, 45, 45, 0.2);
+        }
+
+        .apps-list {
+          display: grid;
+          gap: 12px;
+          margin-top: 6px;
+        }
+
+        .app-item {
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          padding: 12px;
+          display: grid;
+          gap: 8px;
+        }
+
+        .app-item h3 {
+          margin: 0;
+          font-size: 20px;
+        }
+
+        .app-item p {
+          margin: 0;
+          color: var(--text-secondary);
+          line-height: 1.45;
+        }
+
+        .app-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+        }
+
+        .app-header select {
+          border: 1px solid var(--border);
+          border-radius: 9px;
+          padding: 8px 10px;
+          font-weight: 600;
+          background: #fff;
         }
       `}</style>
     </>

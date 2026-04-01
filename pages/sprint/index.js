@@ -163,30 +163,202 @@ const ADVISORS = [
 ]
 
 export default function SprintPage() {
+  const [form, setForm] = useState({
+    full_name: '',
+    email: '',
+    phone: '',
+    major: '',
+    graduation_year: '',
+    linkedin_url: '',
+    role_interest: '',
+    why_interested: '',
+    relevant_experience: '',
+    weekly_hours: '',
+    resume_url: '',
+    portfolio_url: '',
+    availability: '',
+    ai_experience: '',
+    team_preference: '',
+    additional_notes: ''
+  })
+  const [submitting, setSubmitting] = useState(false)
+  const [message, setMessage] = useState('')
+  const [isError, setIsError] = useState(false)
+
+  const handleChange = (key, value) => {
+    setForm(prev => ({ ...prev, [key]: value }))
+  }
+
+  async function submitApplication(e) {
+    e.preventDefault()
+    setSubmitting(true)
+    setMessage('')
+
+    try {
+      const res = await fetch('/api/project-applications', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(form)
+      })
+
+      const data = await res.json()
+      if (!res.ok) throw new Error(data?.error || 'Failed to submit application.')
+
+      setIsError(false)
+      setMessage(data?.message || 'Application submitted successfully.')
+      setForm({
+        full_name: '', email: '', phone: '', major: '', graduation_year: '', linkedin_url: '',
+        role_interest: '', why_interested: '', relevant_experience: '', weekly_hours: '',
+        resume_url: '', portfolio_url: '', availability: '', ai_experience: '',
+        team_preference: '', additional_notes: ''
+      })
+    } catch (error) {
+      setIsError(true)
+      setMessage(error.message || 'Unable to submit application.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <>
       <Head>
-        <title>Apply | Ram Ventures</title>
-        <meta name="description" content="Apply page coming soon." />
+        <title>Apply for Projects | Ram Ventures</title>
+        <meta name="description" content="Apply for Ram Ventures project opportunities." />
       </Head>
 
       <Header />
 
       <section className="page-hero">
         <div className="container" style={{ textAlign: 'center' }}>
-          <h1 className="page-title">Real Consulting Projects — Coming Soon</h1>
-          <p className="page-subtitle">We’re preparing the next cycle of real consulting projects. Please check back soon.</p>
+          <h1 className="page-title">Apply for Projects</h1>
+          <p className="page-subtitle">Complete the full intake form below to apply for real consulting and venture projects.</p>
         </div>
       </section>
 
-      <main style={{ paddingTop: 0 }} />
+      <main style={{ paddingTop: 0 }}>
+        <section className="section container">
+          <form onSubmit={submitApplication} className="apply-form-card">
+            <h2>Project Intake Form</h2>
+
+            <label>Full Name *</label>
+            <input value={form.full_name} onChange={(e) => handleChange('full_name', e.target.value)} required />
+
+            <label>Email *</label>
+            <input type="email" value={form.email} onChange={(e) => handleChange('email', e.target.value)} required />
+
+            <label>Phone Number</label>
+            <input value={form.phone} onChange={(e) => handleChange('phone', e.target.value)} />
+
+            <label>Major / Program</label>
+            <input value={form.major} onChange={(e) => handleChange('major', e.target.value)} />
+
+            <label>Graduation Year</label>
+            <input value={form.graduation_year} onChange={(e) => handleChange('graduation_year', e.target.value)} placeholder="e.g. 2027" />
+
+            <label>LinkedIn URL</label>
+            <input value={form.linkedin_url} onChange={(e) => handleChange('linkedin_url', e.target.value)} placeholder="https://linkedin.com/in/..." />
+
+            <label>Which role/project are you most interested in?</label>
+            <input value={form.role_interest} onChange={(e) => handleChange('role_interest', e.target.value)} placeholder="Market Research, Finance, GTM, Design, PM..." />
+
+            <label>Why are you interested in this program? *</label>
+            <textarea rows={4} value={form.why_interested} onChange={(e) => handleChange('why_interested', e.target.value)} required />
+
+            <label>Relevant Experience</label>
+            <textarea rows={4} value={form.relevant_experience} onChange={(e) => handleChange('relevant_experience', e.target.value)} />
+
+            <label>Weekly Availability (hours)</label>
+            <input value={form.weekly_hours} onChange={(e) => handleChange('weekly_hours', e.target.value)} placeholder="e.g. 4-6" />
+
+            <label>Resume URL</label>
+            <input value={form.resume_url} onChange={(e) => handleChange('resume_url', e.target.value)} placeholder="Google Drive / Dropbox link" />
+
+            <label>Portfolio URL</label>
+            <input value={form.portfolio_url} onChange={(e) => handleChange('portfolio_url', e.target.value)} placeholder="Optional" />
+
+            <label>When can you start?</label>
+            <input value={form.availability} onChange={(e) => handleChange('availability', e.target.value)} placeholder="Immediately / Date" />
+
+            <label>Experience with AI tools / workflows</label>
+            <textarea rows={3} value={form.ai_experience} onChange={(e) => handleChange('ai_experience', e.target.value)} />
+
+            <label>Team preference (if any)</label>
+            <input value={form.team_preference} onChange={(e) => handleChange('team_preference', e.target.value)} />
+
+            <label>Anything else we should know?</label>
+            <textarea rows={3} value={form.additional_notes} onChange={(e) => handleChange('additional_notes', e.target.value)} />
+
+            <button type="submit" className="button" disabled={submitting}>
+              {submitting ? 'Submitting…' : 'Submit Application'}
+            </button>
+
+            {message && (
+              <div className={`apply-message ${isError ? 'error' : 'success'}`}>
+                {message}
+              </div>
+            )}
+          </form>
+        </section>
+      </main>
 
       <footer className="site-footer">
         <div className="container">
           <div className="footer-left">© {new Date().getFullYear()} Ram Ventures</div>
-          <div className="footer-right">Apply</div>
+          <div className="footer-right">Project intake</div>
         </div>
       </footer>
+
+      <style jsx>{`
+        .apply-form-card {
+          background: #fff;
+          border: 1px solid var(--border);
+          border-radius: 14px;
+          box-shadow: var(--shadow-sm);
+          padding: 24px;
+          display: grid;
+          gap: 10px;
+          max-width: 860px;
+          margin: 0 auto;
+        }
+        .apply-form-card h2 {
+          margin: 0 0 6px;
+        }
+        .apply-form-card label {
+          margin-top: 4px;
+          font-weight: 700;
+          font-size: 13px;
+          text-transform: uppercase;
+          letter-spacing: 0.02em;
+        }
+        .apply-form-card input,
+        .apply-form-card textarea {
+          width: 100%;
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          padding: 11px 13px;
+          font-size: 15px;
+        }
+        .apply-form-card textarea { resize: vertical; }
+        .apply-form-card .button { margin-top: 8px; }
+        .apply-message {
+          margin-top: 6px;
+          padding: 10px 12px;
+          border-radius: 9px;
+          border: 1px solid transparent;
+          font-weight: 600;
+        }
+        .apply-message.success {
+          color: #0f5b3f;
+          background: rgba(15, 91, 63, 0.08);
+          border-color: rgba(15, 91, 63, 0.2);
+        }
+        .apply-message.error {
+          color: #8b1f1f;
+          background: rgba(184, 45, 45, 0.08);
+          border-color: rgba(184, 45, 45, 0.2);
+        }
+      `}</style>
     </>
   )
 
