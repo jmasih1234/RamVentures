@@ -1,23 +1,10 @@
 import '../styles/globals.css'
-import { useEffect } from 'react'
+import React from 'react'
 import Head from 'next/head'
 import InteractiveEffects from '../components/InteractiveEffects'
 
 export default function MyApp({ Component, pageProps }) {
-  useEffect(()=>{
-    // dynamically mount ArrowOverlay on client if available
-    if (typeof window !== 'undefined' && window.__arrow_ids){
-      import('../components/ArrowOverlay').then(mod =>{
-        const ArrowOverlay = mod.default
-        const mount = document.getElementById('arrow-mount')
-        if (mount) {
-          // render into mount
-          const root = require('react-dom/client').createRoot(mount)
-          root.render(React.createElement(ArrowOverlay, { ids: window.__arrow_ids }))
-        }
-      }).catch(()=>{})
-    }
-  }, [])
+  // ArrowOverlay removed — was causing hydration failures
 
   return (
     <>
