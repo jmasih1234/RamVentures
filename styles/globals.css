@@ -1462,6 +1462,16 @@ a:hover{
   .page-hero{
     padding:100px 24px 60px;
   }
+  /* Force 2x2 for team grid (4 items) at tablet */
+  .team-grid{
+    grid-template-columns:repeat(2, 1fr);
+  }
+  /* Stats has 3 items — skip 2-col (causes orphan), go straight to 1-col */
+  .stats-grid{
+    grid-template-columns:1fr;
+    gap:32px;
+    max-width:400px;
+  }
 }
 
 @media (max-width:600px){
@@ -1499,6 +1509,14 @@ a:hover{
   }
   .card{
     padding:24px;
+  }
+  /* Stack team and stats grids to single column on mobile */
+  .team-grid{
+    grid-template-columns:1fr;
+  }
+  .stats-grid{
+    grid-template-columns:1fr;
+    gap:24px;
   }
 }
 
