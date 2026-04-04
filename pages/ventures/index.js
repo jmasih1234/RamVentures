@@ -97,7 +97,7 @@ export default function Ventures({ ventures: initialVentures }) {
       <footer className="site-footer">
         <div className="container">
           <div className="footer-left">© {new Date().getFullYear()} Ram Ventures</div>
-          <div className="footer-right">Built for students · <a href="/admin">Admin</a></div>
+          <div className="footer-right">Built for students</div>
         </div>
       </footer>
     </>
