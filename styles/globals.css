@@ -2572,6 +2572,23 @@ a:hover{
   }
 }
 
+/* ===== Research Hero ===== */
+.research-hero {
+  padding: 160px 0 60px;
+  background: linear-gradient(180deg, rgba(15, 91, 63, 0.05) 0%, var(--bg) 100%);
+  text-align: center;
+}
+.research-hero h1 {
+  font-size: clamp(36px, 5vw, 56px);
+  margin-bottom: 12px;
+}
+.research-hero p {
+  font-size: 18px;
+  color: var(--text-secondary);
+  max-width: 540px;
+  margin: 0 auto;
+}
+
 /* ===== Research Page ===== */
 .research-grid {
   display: grid;
@@ -2583,10 +2600,16 @@ a:hover{
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 32px;
+  padding: 0;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   box-shadow: var(--shadow-sm);
+  text-align: left;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  overflow: hidden;
+  width: 100%;
 }
 
 .research-card:hover {
@@ -2596,21 +2619,23 @@ a:hover{
 }
 
 .research-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
+  position: relative;
+  margin-bottom: 0;
 }
 
 .research-card-category {
-  font-size: 12px;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--brand-accent);
-  background: rgba(15, 91, 63, 0.06);
+  color: #fff;
+  background: rgba(15, 91, 63, 0.85);
   padding: 4px 12px;
   border-radius: 6px;
+  backdrop-filter: blur(4px);
 }
 
 .research-card-link {

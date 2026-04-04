@@ -23,7 +23,7 @@ export default function Research() {
   function handleBack() {
     setView('scatter')
     setActiveSlug(null)
-    // Tell iframe to reset (clear sail transition)
+    // Tell iframe to reset (re-run entrance animation)
     iframeRef.current?.contentWindow?.postMessage({ type: 'reset' }, '*')
   }
 

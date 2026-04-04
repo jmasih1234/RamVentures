@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+<title>Research Portfolio</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#0a0a0a;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden;user-select:none}
+
+/* Loading */
+#load{position:fixed;inset:0;z-index:9999;background:#0a0a0a;display:flex;align-items:center;justify-content:center}
+#load.fade{opacity:0;transition:opacity 0.3s ease;pointer-events:none}
+#load.gone{display:none}
+#load-no{font-size:clamp(12px,0.94vw,16px);line-height:1.25;letter-spacing:0.05em;color:rgba(255,255,255,0.5);overflow:hidden}
+#load-no div{will-change:transform;transform:translate3d(0,300%,0);transition:transform 0.6s cubic-bezier(0.76,0,0.24,1)}
+#load-no div.in{transform:translate3d(0,0,0)}
+#load-no div.out{transform:translate3d(0,-110%,0);transition-duration:0.8s}
+
+/* Scatter tiles — sized once, animated via transform only */
+#scatter{position:fixed;inset:0;z-index:10;pointer-events:none;overflow:visible}
+#scatter.settled{overflow:hidden}
+.tile{position:absolute;left:0;top:0;will-change:transform,opacity;overflow:hidden;backface-visibility:hidden;opacity:0;transform-origin:center center}
+.tile-inner{width:100%;height:100%;background-size:cover;background-position:center}
+
+/* Card stage (horizontal browsing) */
+#card-stage{position:fixed;inset:0;z-index:5;pointer-events:none}
+.card{position:absolute;top:0;left:0;border-radius:4px;overflow:hidden;will-change:transform,opacity;opacity:0;cursor:pointer;pointer-events:auto}
+.card-bg{position:absolute;inset:0}
+.card-img{width:100%;height:100%;object-fit:cover;display:block}
+.card-info{position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(0deg,rgba(0,0,0,0.6) 0%,transparent 100%);pointer-events:none}
+.card-cat{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.5);font-weight:500;margin-bottom:6px}
+.card-name{font-size:16px;font-weight:600;letter-spacing:-0.01em}
+.card-hover{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.15);opacity:0;transition:opacity 0.35s ease}
+.card:hover .card-hover{opacity:1}
+.card-plus{font-size:28px;font-weight:200;transform:rotate(0deg) scale(0.8);transition:transform 0.5s cubic-bezier(0.16,1,0.3,1)}
+.card:hover .card-plus{transform:rotate(90deg) scale(1)}
+
+/* Nav */
+#nav{position:fixed;top:32px;left:0;width:100%;display:flex;justify-content:center;z-index:100;opacity:0;transform:translateY(12px);transition:opacity 0.7s ease,transform 0.7s cubic-bezier(0.33,1,0.68,1);pointer-events:none}
+#nav.show{opacity:1;transform:translateY(0)}
+#nav-label{font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.45);font-weight:500}
+
+/* Title */
+#title-wrap{position:fixed;z-index:50;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;display:flex;align-items:center;gap:40px;opacity:0;transition:opacity 0.5s ease}
+#title-wrap.show{opacity:1;pointer-events:auto;cursor:pointer}
+.t-plus{font-size:20px;font-weight:200;opacity:0;transform:rotate(0deg);transition:opacity 0.5s ease,transform 0.7s cubic-bezier(0.16,1,0.3,1)}
+#title-wrap:hover .t-plus{opacity:1;transform:rotate(90deg)}
+.t-text{text-align:center}
+.t-name-wrap{overflow:hidden;display:inline-block}
+.t-name{font-size:clamp(24px,3.2vw,52px);font-weight:500;letter-spacing:-0.02em;line-height:1.1;transform:translateY(115%);transition:transform 0.9s cubic-bezier(0.16,1,0.3,1)}
+.t-name.show{transform:translateY(0)}
+.t-tag{margin-top:8px;font-size:14px;letter-spacing:0.06em;color:rgba(255,255,255,0.5);font-weight:400;opacity:0;transition:opacity 0.6s ease 0.2s}
+#title-wrap.show .t-tag{opacity:1}
+
+/* Page counter */
+#pgn{position:fixed;bottom:32px;left:0;width:100%;text-align:center;z-index:90;font-size:14px;letter-spacing:0.08em;color:rgba(255,255,255,0.5);opacity:0;transition:opacity 0.6s ease}
+#pgn.show{opacity:1}
+
+/* Arrows */
+.arrow{position:fixed;top:50%;z-index:50;transform:translateY(-50%);font-size:22px;color:rgba(255,255,255,0.4);opacity:0;transition:opacity 0.8s ease 0.2s;pointer-events:none;font-weight:200}
+.arrow.show{opacity:1}
+.arrow-l{left:16%}
+.arrow-r{right:16%}
+
+/* Sail transition */
+#sail{position:fixed;inset:0;background:#0a0a0a;z-index:9994;transform:translateY(100%);will-change:transform;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="load"><div id="load-no"><div>0%</div></div></div>
+<div id="scatter"></div>
+<div id="card-stage"></div>
+<div id="nav"><span id="nav-label">Research Portfolio</span></div>
+<div id="title-wrap">
+  <span class="t-plus">+</span>
+  <div class="t-text">
+    <div class="t-name-wrap"><div class="t-name" id="t-name"></div></div>
+    <div class="t-tag" id="t-tag"></div>
+  </div>
+  <span class="t-plus">+</span>
+</div>
+<div class="arrow arrow-l">+</div>
+<div class="arrow arrow-r">+</div>
+<div id="pgn"></div>
+<div id="sail"></div>
+
+<script>
+// ============================================
+// Company data
+// ============================================
+const COMPANIES = [
+  { slug:'atmoszero', name:'AtmosZero', tagline:'Decarbonizing Industrial Heat', category:'Clean Energy', hero:'/images/research/atmoszero-hero.jpg', grad:'linear-gradient(135deg,#0f5b3f,#1a1a1a)' },
+  { slug:'agrisense', name:'AgriSense', tagline:'Precision Agriculture AI', category:'AgTech', hero:'/images/research/agrisense-hero.jpg', grad:'linear-gradient(160deg,#1a1a1a,#ff6b35)' },
+  { slug:'ramcharge', name:'RamCharge', tagline:'Campus-Scale EV Infrastructure', category:'Energy', hero:'/images/research/ramcharge-hero.jpg', grad:'linear-gradient(145deg,#0a2e20,#1a7a52)' },
+  { slug:'peakbio', name:'PeakBio', tagline:'Rapid Pathogen Diagnostics', category:'Biotech', hero:'/images/research/peakbio-hero.jpg', grad:'radial-gradient(circle at 30% 40%,rgba(255,107,53,0.5),#0a0a0a 70%)' },
+  { slug:'frontrange-ai', name:'FrontRange AI', tagline:'Wildfire Risk Intelligence', category:'AI / ML', hero:'/images/research/frontrange-hero.jpg', grad:'linear-gradient(180deg,#0f5b3f,#ff6b35)' },
+  { slug:'trailhead', name:'TrailHead', tagline:'Experiential Learning Platform', category:'EdTech', hero:'/images/research/trailhead-hero.jpg', grad:'radial-gradient(circle at 70% 30%,rgba(15,91,63,0.7),#1a1a1a 60%)' },
+  { slug:'snowmelt', name:'Snowmelt Labs', tagline:'Smart Water Infrastructure', category:'Water Tech', hero:'/images/research/snowmelt-hero.jpg', grad:'linear-gradient(120deg,#ff6b35,#0f5b3f)' },
+  { slug:'alpine-robotics', name:'Alpine Robotics', tagline:'Autonomous Trail Maintenance', category:'Robotics', hero:'/images/research/alpine-hero.jpg', grad:'linear-gradient(200deg,#0a0a0a,#1a7a52)' }
+];
+const N = COMPANIES.length;
+
+// ============================================
+// Math utilities
+// ============================================
+function cbz(x1,y1,x2,y2){
+  return function(t){
+    if(t<=0)return 0; if(t>=1)return 1
+    let ax=3*x1-3*x2+1, bx=3*x2-6*x1, cx=3*x1
+    let ay=3*y1-3*y2+1, by=3*y2-6*y1, cy=3*y1
+    let x=t
+    for(let i=0;i<14;i++){
+      let cv=((ax*x+bx)*x+cx)*x-t
+      if(Math.abs(cv)<1e-7)break
+      let dv=(3*ax*x+2*bx)*x+cx
+      if(Math.abs(dv)<1e-7)break
+      x-=cv/dv
+    }
+    x=Math.max(0,Math.min(1,x))
+    return((ay*x+by)*x+cy)*x
+  }
+}
+
+const easeY=cbz(.8,0,.1,1), easeXW=cbz(.72,0,.11,1)
+
+const iLerp=(a,b,v)=>Math.max(0,Math.min(1,(v-a)/(b-a)))
+const mix=(a,b,t)=>a+(b-a)*t
+const clamp=(v,lo,hi)=>v<lo?lo:v>hi?hi:v
+const FR=1000/60, LERP_P=0.083
+
+function damp(cur,targ,f,rd){return cur+(targ-cur)*(1-Math.exp(Math.log(1-f)*rd))}
+
+// ============================================
+// Scatter layout (25-tile mosaic)
+// ============================================
+const TOTAL=25, ROWS=5, HERO=12
+function calcScatter(W,H){
+  const psdW=1600, winW=W/psdW, gap=30*winW
+  const thW=(W-4*gap)/5, thH=thW*H/W
+  const stX=thW+gap, stY=thH+gap
+  const cellW=W+2, cellH=H+2
+  const cGap=gap*cellW/thW
+  const cStX=cellW+cGap, cStY=cellH+cGap, hStY=.5*cStY
+  const n=H+.5*(5*thH+4*gap-H), p=12*thH, o=.5*stY
+
+  const tiles=[]
+  for(let i=0;i<TOTAL;i++){
+    const col=Math.floor(i/ROWS), row=i%ROWS, odd=col%2===1
+    const cOff=col-2, rOff=row-2, absC=Math.abs(cOff)
+
+    const lx=(W/2-cellW/2)+cOff*cStX
+    const ly=(H/2-cellH/2)+rOff*cStY-(odd?hStY:0)
+
+    const sx=(W/2-thW/2)+cOff*stX
+    const sy=(W/2-thH/2)+rOff*stY-(odd?.5*stY:0)
+
+    const oX=sx-lx, oY=sy-ly
+    const oW=thW-cellW, oH=thH-cellH
+
+    const yB=odd?-(n-o+(4-row)*p+absC*thH+20):(n+row*p+absC*thH+20)
+
+    const initScale=i===HERO?0.5:0
+
+    tiles.push({lx,ly,cW:cellW,cH:cellH, thW,thH, sx,sy, oX,oY,oW,oH, yB, hero:i===HERO, initScale})
+  }
+  return tiles
+}
+
+// ============================================
+// Card layouts
+// ============================================
+const CW=320, CH=440, CGAP=20
+function inLayout(active,W,H){
+  return Array.from({length:N},(_,i)=>({x:i===active?0:(i<active?-W*2:W*2),y:0,w:W,h:H,op:i===active?1:0}))
+}
+function outLayout(W,H,scrollX){
+  const sx=80
+  return Array.from({length:N},(_,i)=>({x:sx+i*(CW+CGAP)-scrollX,y:(H-CH)/2,w:CW,h:CH,op:1}))
+}
+
+// ============================================
+// State
+// ============================================
+let mode='loading', activeIdx=0
+let scrollCur=0, scrollTarg=0, scrollMax=0
+let lastTime=0, isFF=/firefox/i.test(navigator.userAgent)
+let isDragging=false, dragStartX=0, dragScrollTarg=0
+let cardPos=[], cardTarg=[]
+let scatterTiles, tileEls=[]
+
+// ============================================
+// Build scatter tiles
+// ============================================
+const scatterEl=document.getElementById('scatter')
+const gradients=[
+  'linear-gradient(135deg,#1a5e40,#0a0a0a)','linear-gradient(160deg,#0a0a0a,#c85a30)',
+  'linear-gradient(145deg,#0a2e20,#1a6a42)','radial-gradient(circle at 30% 40%,rgba(200,90,48,0.4),#0a0a0a 70%)',
+  'linear-gradient(180deg,#1a5e40,#c85a30)','radial-gradient(circle at 70% 30%,rgba(15,80,55,0.6),#0a0a0a 60%)',
+  'linear-gradient(120deg,#c85a30,#1a5e40)','linear-gradient(200deg,#0a0a0a,#1a6a42)',
+  'linear-gradient(155deg,#1a3830,#0a0a0a)','linear-gradient(140deg,#2a2a2a,#0a0a0a)',
+  'linear-gradient(130deg,#0a0a0a,#1a5e40)','linear-gradient(165deg,#1a3a2a,#0a0a0a)',
+  null, // HERO — uses AtmosZero image
+  'linear-gradient(145deg,#c85a30,#0a0a0a)','linear-gradient(150deg,#0a0a0a,#1a5e40)',
+  'linear-gradient(135deg,#2a2a2a,#0a0a0a)','linear-gradient(160deg,#0a2e20,#1a5e40)',
+  'linear-gradient(125deg,#1a3a2a,#0a0a0a)','linear-gradient(155deg,#c85a30,#1a5e40)',
+  'linear-gradient(140deg,#0a0a0a,#1a5e40)','linear-gradient(130deg,#2a2a2a,#0a0a0a)',
+  'linear-gradient(145deg,#0a2e20,#0a0a0a)','linear-gradient(165deg,#c85a30,#0a0a0a)',
+  'linear-gradient(150deg,#1a5e40,#0a0a0a)','linear-gradient(135deg,#0a0a0a,#1a3a2a)'
+]
+for(let i=0;i<TOTAL;i++){
+  const el=document.createElement('div'); el.className='tile'
+  const bg=i===HERO
+    ? `background-image:url(${COMPANIES[0].hero});background-size:cover;background-position:center`
+    : `background:${gradients[i]}`
+  el.innerHTML=`<div class="tile-inner" style="${bg}"></div>`
+  scatterEl.appendChild(el)
+  tileEls.push(el)
+}
+
+// Set tile DOM sizes to cell (full viewport) dimensions
+function sizeTiles(){
+  for(let i=0;i<TOTAL;i++){
+    const t=scatterTiles[i]
+    tileEls[i].style.width=Math.round(t.cW)+'px'
+    tileEls[i].style.height=Math.round(t.cH)+'px'
+  }
+}
+
+// ============================================
+// Build company cards
+// ============================================
+const cardStage=document.getElementById('card-stage')
+const cardEls=[]
+for(let i=0;i<N;i++){
+  const c=COMPANIES[i], el=document.createElement('div'); el.className='card'
+  const bgStyle=i===0
+    ? `background-image:url(${c.hero});background-size:cover;background-position:center`
+    : `background:${c.grad}`
+  el.innerHTML=`<div class="card-bg" style="${bgStyle}"></div><div class="card-info"><div class="card-cat">${c.category}</div><div class="card-name">${c.name}</div></div><div class="card-hover"><span class="card-plus">+</span></div>`
+  el.addEventListener('click',()=>onCardClick(i))
+  cardStage.appendChild(el); cardEls.push(el)
+}
+
+// ============================================
+// Scatter render
+// ============================================
+function renderScatter(p){
+  const eY_=easeY(iLerp(0,.65,p))
+  const eX_=easeXW(iLerp(.4,1,p))
+
+  for(let i=0;i<TOTAL;i++){
+    const t=scatterTiles[i], el=tileEls[i]
+
+    const introX = mix(t.oX, 0, eX_)
+    const introY = mix(t.oY, 0, eX_) + mix(t.yB, 0, eY_)
+    const introW = mix(t.oW, 0, eX_)
+    const introH = mix(t.oH, 0, eX_)
+
+    const visX = t.lx + introX
+    const visY = t.ly + introY
+    const visW = t.cW + introW
+    const visH = t.cH + introH
+
+    const scX = visW / t.cW
+    const scY = visH / t.cH
+
+    const tx = visX + (visW - t.cW) / 2
+    const ty = visY + (visH - t.cH) / 2
+
+    const a = p < .05 ? p / .05 : 1
+
+    el.style.transform = `translate3d(${tx.toFixed(1)}px,${ty.toFixed(1)}px,0) scale(${scX.toFixed(4)},${scY.toFixed(4)})`
+    el.style.opacity = a
+  }
+}
+
+// ============================================
+// Card render (per frame)
+// ============================================
+function renderCards(rd){
+  for(let i=0;i<N;i++){
+    const p=cardPos[i],t=cardTarg[i]
+    if(!p||!t)continue
+    for(const k of['x','y','w','h','op']){
+      const d=t[k]-p[k]
+      if(Math.abs(d)>.5)p[k]=damp(p[k],t[k],LERP_P,rd); else p[k]=t[k]
+    }
+    const el=cardEls[i]
+    el.style.transform=`translate3d(${p.x}px,${p.y}px,0)`
+    el.style.width=Math.round(p.w)+'px'; el.style.height=Math.round(p.h)+'px'
+    el.style.opacity=Math.max(0,Math.min(1,p.op))
+  }
+}
+
+// ============================================
+// Mode transitions
+// ============================================
+function setTitle(idx){
+  activeIdx=idx
+  document.getElementById('t-name').textContent=COMPANIES[idx].name
+  document.getElementById('t-tag').textContent=COMPANIES[idx].tagline
+  document.getElementById('pgn').textContent=`${idx+1} \u2014 ${N}`
+}
+
+function enterIn(idx){
+  mode='in'; setTitle(idx)
+  const W=innerWidth,H=innerHeight
+  cardTarg=inLayout(idx,W,H)
+  document.getElementById('pgn').classList.remove('show')
+  document.getElementById('title-wrap').classList.add('show')
+  document.getElementById('t-name').classList.add('show')
+  document.querySelectorAll('.arrow').forEach(a=>a.classList.add('show'))
+}
+
+function enterOut(){
+  mode='out'; scrollCur=0; scrollTarg=0
+  const W=innerWidth,H=innerHeight
+  scrollMax=Math.max(0,N*(CW+CGAP)-W+160)
+  cardTarg=outLayout(W,H,0)
+  if(!cardPos.length)cardPos=cardTarg.map(t=>({...t}))
+  document.getElementById('title-wrap').classList.remove('show')
+  document.getElementById('t-name').classList.remove('show')
+  document.querySelectorAll('.arrow').forEach(a=>a.classList.remove('show'))
+  setTimeout(()=>document.getElementById('pgn').classList.add('show'),300)
+}
+
+function onCardClick(i){
+  if(isDragging)return
+  if(mode==='out'){enterIn(i)}
+  else if(mode==='in'){selectCompany(i)}
+}
+
+function selectCompany(i){
+  const sail=document.getElementById('sail')
+  sail.style.transition='transform 0.7s cubic-bezier(0.76,0,0.24,1)'
+  sail.style.transform='translateY(0%)'
+  setTimeout(()=>{
+    if(window.parent!==window){
+      window.parent.postMessage({type:'companySelected',slug:COMPANIES[i].slug},'*')
+    }
+  },700)
+}
+
+document.getElementById('title-wrap').addEventListener('click',()=>{
+  if(mode==='in')selectCompany(activeIdx)
+})
+
+// ============================================
+// Scroll / wheel / trackpad / drag
+// ============================================
+window.addEventListener('wheel',(e)=>{
+  e.preventDefault()
+  if(mode==='in'){
+    const mag=Math.max(Math.abs(e.deltaX),Math.abs(e.deltaY))
+    if(mag>2)enterOut()
+  }else if(mode==='out'){
+    const raw=Math.abs(e.deltaX)>=Math.abs(e.deltaY)?e.deltaX:e.deltaY
+    const delta=(isFF&&e.deltaMode===1)?raw*20:raw
+    scrollTarg=clamp(scrollTarg+delta,0,scrollMax)
+  }
+},{passive:false})
+
+window.addEventListener('mousedown',(e)=>{
+  if(e.button!==0||mode==='intro'||mode==='loading')return
+  isDragging=false; dragStartX=e.clientX; dragScrollTarg=scrollTarg
+  const onMove=(ev)=>{
+    if(Math.abs(ev.clientX-dragStartX)>8)isDragging=true
+    if(isDragging&&mode==='out'){scrollTarg=clamp(dragScrollTarg+(dragStartX-ev.clientX)*2.5,0,scrollMax)}
+    if(isDragging&&mode==='in')enterOut()
+  }
+  const onUp=()=>{window.removeEventListener('mousemove',onMove);window.removeEventListener('mouseup',onUp);document.body.style.cursor='';setTimeout(()=>isDragging=false,50)}
+  window.addEventListener('mousemove',onMove)
+  window.addEventListener('mouseup',onUp)
+  document.body.style.cursor='grabbing'
+})
+
+let touchX=0
+window.addEventListener('touchstart',(e)=>{touchX=e.touches[0].clientX},{passive:true})
+window.addEventListener('touchmove',(e)=>{
+  if(mode==='out'){const d=touchX-e.touches[0].clientX;touchX=e.touches[0].clientX;scrollTarg=clamp(scrollTarg+d*2,0,scrollMax)}
+  if(mode==='in'){const d=Math.abs(touchX-e.touches[0].clientX);if(d>15)enterOut()}
+},{passive:true})
+
+// ============================================
+// Arrow key navigation (in "in" mode)
+// ============================================
+window.addEventListener('keydown',(e)=>{
+  if(mode==='in'){
+    if(e.key==='ArrowRight'||e.key==='ArrowDown'){
+      e.preventDefault()
+      const next=(activeIdx+1)%N
+      enterIn(next)
+    }else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){
+      e.preventDefault()
+      const prev=(activeIdx-1+N)%N
+      enterIn(prev)
+    }else if(e.key==='Enter'){
+      e.preventDefault()
+      selectCompany(activeIdx)
+    }
+  }
+})
+
+// ============================================
+// Main loop
+// ============================================
+function mainLoop(now){
+  const dt=now-lastTime; lastTime=now; const rd=dt/FR
+
+  if(mode==='out'){
+    scrollCur=damp(scrollCur,scrollTarg,LERP_P,rd)
+    if(Math.abs(scrollTarg-scrollCur)<.3)scrollCur=scrollTarg
+    const W=innerWidth,H=innerHeight
+    cardTarg=outLayout(W,H,scrollCur)
+    const cx=W/2; let best=0,bestD=Infinity
+    cardTarg.forEach((t,i)=>{const d=Math.abs(t.x+t.w/2-cx);if(d<bestD){bestD=d;best=i}})
+    if(best!==activeIdx)setTitle(best)
+  }
+
+  if(mode==='in'||mode==='out')renderCards(rd)
+  requestAnimationFrame(mainLoop)
+}
+
+// ============================================
+// Loading → scatter → ready
+// ============================================
+function init(){
+  scatterTiles=calcScatter(innerWidth,innerHeight)
+  sizeTiles()
+
+  const numDiv=document.querySelector('#load-no div')
+  setTimeout(()=>numDiv.classList.add('in'),16)
+
+  const dur=1800, t0=performance.now()
+  function tick(){
+    const raw=Math.min(1,(performance.now()-t0)/dur)
+    numDiv.textContent=Math.round((1-Math.pow(1-raw,3))*100)+'%'
+    if(raw<1){setTimeout(tick,16);return}
+    setTimeout(()=>{
+      numDiv.classList.remove('in'); numDiv.classList.add('out')
+      setTimeout(()=>{
+        document.getElementById('load').classList.add('fade')
+        setTimeout(()=>{
+          document.getElementById('load').classList.add('gone')
+          startScatter()
+        },300)
+      },400)
+    },250)
+  }
+  setTimeout(tick,16)
+}
+
+function startScatter(){
+  mode='intro'
+  const start=performance.now()
+  function loop(now){
+    const p=Math.min(1,(now-start)/5000)
+    renderScatter(p)
+    if(p<1){requestAnimationFrame(loop)}
+    else{setTimeout(finishIntro,200)}
+  }
+  requestAnimationFrame(loop)
+}
+
+function finishIntro(){
+  // Position cards FIRST (while scatter still covers them)
+  mode='in'; activeIdx=0
+  const W=innerWidth,H=innerHeight
+  cardPos=inLayout(0,W,H).map(t=>({...t}))
+  cardTarg=inLayout(0,W,H)
+  cardPos.forEach((p,i)=>{
+    const el=cardEls[i]
+    el.style.transform=`translate3d(${p.x}px,${p.y}px,0)`
+    el.style.width=Math.round(p.w)+'px'; el.style.height=Math.round(p.h)+'px'
+    el.style.opacity=p.op
+  })
+
+  // Now hide scatter — cards are already in position behind it
+  const sEl=document.getElementById('scatter')
+  sEl.classList.add('settled')
+  sEl.style.display='none'
+
+  lastTime=performance.now()
+  requestAnimationFrame(mainLoop)
+
+  setTitle(0)
+  setTimeout(()=>document.getElementById('nav').classList.add('show'),200)
+  setTimeout(()=>{
+    document.getElementById('title-wrap').classList.add('show')
+    document.getElementById('t-name').classList.add('show')
+  },400)
+  setTimeout(()=>document.querySelectorAll('.arrow').forEach(a=>a.classList.add('show')),600)
+}
+
+// Resize
+window.addEventListener('resize',()=>{
+  scatterTiles=calcScatter(innerWidth,innerHeight)
+  sizeTiles()
+  if(mode==='in'){
+    const l=inLayout(activeIdx,innerWidth,innerHeight)
+    cardPos=l.map(t=>({...t})); cardTarg=l
+    cardPos.forEach((p,i)=>{
+      const el=cardEls[i]
+      el.style.transform=`translate3d(${p.x}px,${p.y}px,0)`
+      el.style.width=Math.round(p.w)+'px'; el.style.height=Math.round(p.h)+'px'
+      el.style.opacity=p.op
+    })
+  }
+})
+
+// Listen for reset message from parent (when returning from CompanyDetail)
+window.addEventListener('message',(e)=>{
+  if(e.data?.type==='reset'){
+    const sail=document.getElementById('sail')
+    sail.style.transition='transform 0.7s cubic-bezier(0.33,1,0.68,1)'
+    sail.style.transform='translateY(-100%)'
+    setTimeout(()=>{sail.style.transform='translateY(100%)'},700)
+  }
+})
+
+// Go!
+init()
+</script>
+</body>
+</html>
