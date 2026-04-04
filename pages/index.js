@@ -11,7 +11,7 @@ export default function Home({ ventures = [] }) {
       <section className="hero banner">
         <div className="hero-bg">
           <Image 
-            src="/pathways-composite.png" 
+            src="/logos/pathways-composite.png" 
             alt="Venture Backdrop" 
             className="venture-backdrop"
             fill
@@ -227,7 +227,7 @@ export default function Home({ ventures = [] }) {
       <footer className="site-footer">
         <div className="container">
           <div className="footer-left">© {new Date().getFullYear()} Ram Ventures</div>
-          <div className="footer-right">Built for students · <a href="/admin">Admin</a></div>
+          <div className="footer-right">Built for students</div>
         </div>
       </footer>
     </>
