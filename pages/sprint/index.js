@@ -5,8 +5,7 @@ import { useState, useEffect } from 'react'
 import Header from '../../components/Header'
 import ScrollReveal from '../../components/ScrollReveal'
 
-const APPLY_URL =
-  'https://docs.google.com/forms/d/e/1FAIpQLSfx49YqZRDpIq5sK-U-sA9KUJyoEXfLvVLl904g5L99FtUwtQ/viewform'
+const APPLY_URL = '/apply'
 const DEADLINE = new Date('2026-04-05T23:59:59')
 
 function useCountdown() {
@@ -193,9 +192,9 @@ export default function SprintPage() {
             client. Your name on the deliverable.
           </p>
           <div className="hero-actions">
-            <a href={APPLY_URL} target="_blank" rel="noopener noreferrer" className="cta primary">
+            <Link href={APPLY_URL} className="cta primary">
               Apply Now →
-            </a>
+            </Link>
             <a href="#roles" className="cta secondary">See Open Roles ↓</a>
           </div>
           <div className="sprint-deadline-badge">
@@ -401,9 +400,9 @@ export default function SprintPage() {
           </div>
 
           <div style={{ textAlign: 'center', marginTop: 48 }}>
-            <a href={APPLY_URL} target="_blank" rel="noopener noreferrer" className="button">
+            <Link href={APPLY_URL} className="button">
               Apply for a Role →
-            </a>
+            </Link>
           </div>
         </section>
 
@@ -541,15 +540,13 @@ export default function SprintPage() {
             >
               12–18 spots. A TIME 100 client. VC mentors. 4 weeks to build something real.
             </p>
-            <a
+            <Link
               href={APPLY_URL}
-              target="_blank"
-              rel="noopener noreferrer"
               className="button"
               style={{ position: 'relative', zIndex: 1 }}
             >
               Apply Now →
-            </a>
+            </Link>
           </ScrollReveal>
         </section>
       </main>
@@ -558,8 +555,7 @@ export default function SprintPage() {
         <div className="container">
           <div className="footer-left">© {new Date().getFullYear()} Ram Ventures</div>
           <div className="footer-right">
-            Colorado State University&apos;s First Student Startup Incubator ·{' '}
-            <Link href="/admin">Admin</Link>
+            Colorado State University&apos;s First Student Startup Incubator
           </div>
         </div>
       </footer>
