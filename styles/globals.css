@@ -1240,6 +1240,52 @@ a:hover{
   line-height:1.5;
 }
 
+/* Dark branded team cards (homepage) */
+.team-card--dark{
+  background:linear-gradient(135deg, #0a3d2a 0%, #0f5b3f 50%, #1a7a52 100%);
+  border:1px solid rgba(255,255,255,0.1);
+  padding:40px 32px;
+  min-height:240px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.team-card--dark .team-card__initials{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.12);
+  border:2px solid rgba(255,107,53,0.5);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  font-weight:700;
+  color:rgba(255,255,255,0.9);
+  letter-spacing:0.05em;
+  margin-bottom:20px;
+}
+.team-card--dark .team-role{
+  color:#ff6b35;
+}
+.team-card--dark .team-name{
+  color:#ffffff;
+}
+.team-card--dark .team-summary{
+  color:rgba(255,255,255,0.65);
+  font-size:13px;
+}
+.team-card--dark:hover{
+  background:linear-gradient(135deg, #0d4a33 0%, #127a4e 50%, #1f9060 100%);
+  border-color:rgba(255,107,53,0.4);
+  transform:translateY(-8px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.3);
+}
+.team-card--dark::before{
+  display:none;
+}
+
 .team-detail{
   display:grid;
   grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
@@ -1320,26 +1366,46 @@ a:hover{
 }
 
 .contact-icon{
-  font-size:48px;
-  margin-bottom:16px;
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  background:rgba(15,91,63,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 16px;
+  color:var(--brand-accent);
+  transition:all 0.3s ease;
+}
+
+.contact-card:hover .contact-icon{
+  background:var(--brand-accent);
+  color:#ffffff;
 }
 
 .contact-card h3{
-  font-size:20px;
-  margin:0 0 12px 0;
+  font-size:18px;
+  margin:0 0 8px 0;
   color:var(--text-color);
 }
 
-.contact-card a{
-  font-size:16px;
+.contact-link{
+  font-size:15px;
   color:var(--brand-accent);
   font-weight:600;
   text-decoration:none;
   transition:color 0.3s ease;
 }
 
-.contact-card a:hover{
+.contact-card:hover .contact-link{
   color:var(--accent-primary);
+}
+
+/* When contact-card is itself an <a> tag */
+a.contact-card{
+  text-decoration:none;
+  display:block;
+  cursor:pointer;
 }
 
 /* Enhanced Empty State */
