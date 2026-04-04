@@ -32,7 +32,25 @@ export default function MermaidChart({ code, className='' }){
       }
       try{
         // initialize with non-blocking startOnLoad off
-        mermaid.initialize({ startOnLoad: false, theme: 'neutral' })
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: 'dark',
+          themeVariables: {
+            primaryColor: '#00ff00',
+            primaryTextColor: '#fafafa',
+            primaryBorderColor: '#00ff00',
+            lineColor: '#a1a1aa',
+            secondaryColor: '#18181b',
+            tertiaryColor: '#111114',
+            background: '#0a0a0c',
+            mainBkg: '#18181b',
+            nodeBorder: '#00ff00',
+            clusterBkg: '#111114',
+            clusterBorder: '#00ff00',
+            titleColor: '#fafafa',
+            edgeLabelBackground: '#18181b',
+          },
+        })
         const id = 'm' + Math.random().toString(36).slice(2,9)
         // mermaid.render returns a promise in some builds; handle both
         const res = mermaid.render(id, code)

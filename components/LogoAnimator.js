@@ -7,7 +7,7 @@ export default function LogoAnimator({ className = 'nav-logo' }){
     let cancelled = false
     async function inline(){
       try{
-        const res = await fetch('/ram-logo.svg')
+        const res = await fetch('/logos/ram-logo.svg')
         const svgText = await res.text()
         if (cancelled) return
         const mount = mountRef.current
@@ -51,7 +51,7 @@ export default function LogoAnimator({ className = 'nav-logo' }){
         rect.setAttribute('rx', Math.min(24, Math.min(w,h)*0.06))
         rect.setAttribute('ry', Math.min(24, Math.min(w,h)*0.06))
         rect.setAttribute('fill','none')
-        rect.setAttribute('stroke','#ffbf6b')
+        rect.setAttribute('stroke','#00ff00')
         rect.setAttribute('stroke-width','6')
         rect.setAttribute('class','logo-anim-path')
 

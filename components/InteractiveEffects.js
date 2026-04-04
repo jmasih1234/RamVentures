@@ -1,115 +1,304 @@
 import { useEffect } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 
-export default function InteractiveEffects(){
-  useEffect(()=>{
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
+
+export default function InteractiveEffects() {
+  useEffect(() => {
     if (typeof window === 'undefined') return
 
-    // Helper: stagger apply in-view with per-item delay
-    function applyStagger(items, base = 60){
-      items.forEach((el, i) => {
-        el.style.transitionDelay = `${i * base}ms`
-        el.classList.add('in-view')
-      })
-    }
+    // Context for cleanup
+    const ctx = gsap.context(() => {
+      // ============================================
+      // HERO ANIMATIONS
+      // ============================================
 
-    // 1) Enhanced scroll reveal for sections and gallery cards
-    const observer = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        if (!e.isIntersecting) return
-        const el = e.target
-        if (el.classList.contains('gallery')){
-          const cards = Array.from(el.querySelectorAll('.gallery-card'))
-          applyStagger(cards, 80)
-        } else if (el.classList.contains('hero')){
-          // hero words reveal handled separately
-          el.classList.add('in-view')
-        } else {
-          el.classList.add('in-view')
+      // Split hero title into words and animate
+      const heroTitle = document.querySelector('.hero-title')
+      if (heroTitle && !heroTitle.dataset.split) {
+        const text = heroTitle.textContent.trim()
+        const words = text.split(/\s+/)
+
+        // Check if "Labs" should be accented
+        heroTitle.innerHTML = words
+          .map((word, i) => {
+            const isAccent = word.toLowerCase() === 'labs'
+            return `<span class="word ${isAccent ? 'accent' : ''}" style="display:inline-block">${word}</span>`
+          })
+          .join(' ')
+        heroTitle.dataset.split = '1'
+
+        // Animate words in
+        const wordSpans = heroTitle.querySelectorAll('.word')
+        gsap.fromTo(
+          wordSpans,
+          {
+            opacity: 0,
+            y: 60,
+            rotateX: -15,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            duration: 1,
+            stagger: 0.12,
+            ease: 'power3.out',
+            delay: 0.3,
+            onComplete: () => {
+              wordSpans.forEach(w => w.classList.add('revealed'))
+            },
+          }
+        )
+      }
+
+      // Animate hero subtitle
+      const heroSub = document.querySelector('.hero-sub')
+      if (heroSub) {
+        gsap.fromTo(
+          heroSub,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+            delay: 0.8,
+            onComplete: () => heroSub.classList.add('revealed'),
+          }
+        )
+      }
+
+      // Animate hero actions
+      const heroActions = document.querySelector('.hero-actions')
+      if (heroActions) {
+        gsap.fromTo(
+          heroActions,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+            delay: 1,
+            onComplete: () => heroActions.classList.add('revealed'),
+          }
+        )
+      }
+
+      // ============================================
+      // PARALLAX EFFECTS
+      // ============================================
+
+      const heroBg = document.querySelector('.hero-bg')
+      const heroInner = document.querySelector('.hero-inner')
+
+      if (heroBg) {
+        gsap.to(heroBg, {
+          y: 150,
+          scale: 1.1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.hero',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1,
+          },
+        })
+      }
+
+      if (heroInner) {
+        gsap.to(heroInner, {
+          y: 80,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.hero',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1,
+          },
+        })
+      }
+
+      // ============================================
+      // SECTION REVEAL ANIMATIONS
+      // ============================================
+
+      // Sections fade in and reveal
+      const sections = document.querySelectorAll('.section')
+      sections.forEach(section => {
+        gsap.fromTo(
+          section,
+          { opacity: 0.3 },
+          {
+            opacity: 1,
+            duration: 0.8,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 80%',
+              toggleActions: 'play none none none',
+              onEnter: () => section.classList.add('in-view'),
+            },
+          }
+        )
+
+        // Animate heading underline
+        const h2 = section.querySelector('h2')
+        if (h2) {
+          ScrollTrigger.create({
+            trigger: h2,
+            start: 'top 85%',
+            onEnter: () => h2.classList.add('in-view'),
+          })
         }
       })
-    }, { threshold: 0.12 })
-    document.querySelectorAll('.section, .gallery, .hero').forEach(el=>observer.observe(el))
 
-    // 2) Split hero title words into spans for staggered reveal (idempotent)
-    const title = document.querySelector('.hero-title')
-    if (title && !title.dataset.split){
-      const words = title.textContent.trim().split(/\s+/)
-      title.innerHTML = words.map(w => `<span class="word">${w}</span>`).join(' ')
-      title.dataset.split = '1'
-    }
+      // ============================================
+      // GALLERY CARD ANIMATIONS
+      // ============================================
 
-    // when hero becomes visible, animate words with stagger
-    const hero = document.querySelector('.hero')
-    function revealHeroWords(){
-      const words = Array.from(document.querySelectorAll('.hero-title .word'))
-      words.forEach((w, i)=>{
-        w.style.transition = `transform 520ms cubic-bezier(.2,.9,.2,1) ${i*70}ms, opacity 420ms ease ${i*70}ms`
-        w.classList.add('in-view')
-      })
-    }
+      const gallery = document.querySelector('.gallery')
+      if (gallery) {
+        const cards = gallery.querySelectorAll('.gallery-card')
 
-    // If hero already in view, reveal now, otherwise observe once
-    if (hero && hero.getBoundingClientRect().top < window.innerHeight) revealHeroWords()
-    else if (hero){
-      const hObs = new IntersectionObserver((ents, o)=>{
-        ents.forEach(en=>{ if (en.isIntersecting){ revealHeroWords(); o.disconnect() } })
-      }, { threshold: 0.2 })
-      hObs.observe(hero)
-    }
+        ScrollTrigger.create({
+          trigger: gallery,
+          start: 'top 75%',
+          onEnter: () => {
+            gsap.fromTo(
+              cards,
+              {
+                opacity: 0,
+                y: 40,
+                scale: 0.95,
+              },
+              {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.6,
+                stagger: 0.1,
+                ease: 'power3.out',
+                onComplete: () => {
+                  cards.forEach(card => card.classList.add('revealed'))
+                },
+              }
+            )
+          },
+          once: true,
+        })
 
-    // 3) Parallax: scroll and pointer parallax for hero background and inner content
-    const heroBg = document.querySelector('.hero-bg')
-    const heroInner = document.querySelector('.hero-inner')
-    function onScroll(){
-      const sc = window.scrollY
-      if (heroBg) heroBg.style.transform = `translateY(${sc * 0.12}px) scale(${1 + Math.min(sc/1800,0.08)})`
-      if (heroInner) heroInner.style.transform = `translateY(${Math.min(sc * 0.06, 28)}px)`
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
+        // 3D tilt effect on hover
+        cards.forEach(card => {
+          const handleMouseMove = (e) => {
+            const rect = card.getBoundingClientRect()
+            const x = (e.clientX - rect.left) / rect.width
+            const y = (e.clientY - rect.top) / rect.height
+            const rotateX = (y - 0.5) * -10
+            const rotateY = (x - 0.5) * 10
 
-    // subtle pointer parallax on hero
-    function onPointer(e){
-      if (!hero) return
-      const rect = hero.getBoundingClientRect()
-      const px = (e.clientX - rect.left)/rect.width - 0.5
-      const py = (e.clientY - rect.top)/rect.height - 0.5
-      if (heroInner) heroInner.style.transform = `translate3d(${px*10}px, ${Math.min(window.scrollY * 0.02,28) + py*8}px, 0)`
-      if (heroBg) heroBg.style.transform = `translate3d(${px*18}px, ${window.scrollY * 0.12}px, 0) scale(${1 + Math.min(window.scrollY/1800,0.08)})`
-    }
-    hero && hero.addEventListener('pointermove', onPointer)
-    hero && hero.addEventListener('pointerleave', ()=>{ if (heroInner) heroInner.style.transform = '' })
+            gsap.to(card, {
+              rotateX,
+              rotateY,
+              scale: 1.02,
+              duration: 0.4,
+              ease: 'power2.out',
+              transformPerspective: 1000,
+            })
 
-    // 4) Tilt effect for gallery cards (preserve previous behaviour, but slightly softer)
-    const cards = Array.from(document.querySelectorAll('.gallery-card'))
-    const handlers = new Map()
-    cards.forEach((card, idx) => {
-      // set initial stagger delay so they cascade in
-      card.style.transitionDelay = `${idx * 60}ms`
+            // Update CSS custom properties for glow
+            card.style.setProperty('--mouse-x', `${x * 100}%`)
+            card.style.setProperty('--mouse-y', `${y * 100}%`)
+          }
 
-      const onMove = (e) => {
-        const rect = card.getBoundingClientRect()
-        const px = (e.clientX - rect.left) / rect.width
-        const py = (e.clientY - rect.top) / rect.height
-        const rx = (py - 0.5) * -6
-        const ry = (px - 0.5) * 10
-        card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`
+          const handleMouseLeave = () => {
+            gsap.to(card, {
+              rotateX: 0,
+              rotateY: 0,
+              scale: 1,
+              duration: 0.6,
+              ease: 'elastic.out(1, 0.5)',
+            })
+          }
+
+          card.addEventListener('mousemove', handleMouseMove)
+          card.addEventListener('mouseleave', handleMouseLeave)
+        })
       }
-      const onLeave = () => { card.style.transform = '' }
-      card.addEventListener('pointermove', onMove)
-      card.addEventListener('pointerleave', onLeave)
-      handlers.set(card, { onMove, onLeave })
+
+      // ============================================
+      // GRID CARDS (Events, etc)
+      // ============================================
+
+      const gridCards = document.querySelectorAll('.grid .card')
+      if (gridCards.length) {
+        gsap.fromTo(
+          gridCards,
+          {
+            opacity: 0,
+            y: 30,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: '.grid',
+              start: 'top 80%',
+            },
+          }
+        )
+      }
+
+      // ============================================
+      // POINTER PARALLAX ON HERO
+      // ============================================
+
+      const hero = document.querySelector('.hero')
+      if (hero && heroInner && heroBg) {
+        const handlePointerMove = (e) => {
+          const rect = hero.getBoundingClientRect()
+          const x = (e.clientX - rect.left) / rect.width - 0.5
+          const y = (e.clientY - rect.top) / rect.height - 0.5
+
+          gsap.to(heroInner, {
+            x: x * 20,
+            y: y * 15,
+            duration: 0.8,
+            ease: 'power2.out',
+          })
+
+          gsap.to(heroBg, {
+            x: x * 30,
+            y: y * 20,
+            duration: 1,
+            ease: 'power2.out',
+          })
+        }
+
+        const handlePointerLeave = () => {
+          gsap.to([heroInner, heroBg], {
+            x: 0,
+            y: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+          })
+        }
+
+        hero.addEventListener('pointermove', handlePointerMove)
+        hero.addEventListener('pointerleave', handlePointerLeave)
+      }
     })
 
-    // cleanup
-    return ()=>{
-      observer.disconnect()
-      window.removeEventListener('scroll', onScroll)
-      hero && hero.removeEventListener('pointermove', onPointer)
-      hero && hero.removeEventListener('pointerleave', ()=>{})
-      handlers.forEach((h, el)=>{
-        el.removeEventListener('pointermove', h.onMove)
-        el.removeEventListener('pointerleave', h.onLeave)
-      })
+    // Cleanup
+    return () => {
+      ctx.revert()
     }
   }, [])
 
