@@ -1472,6 +1472,27 @@ a:hover{
     gap:32px;
     max-width:400px;
   }
+  /* Membership has 3 items — 1-col avoids 2+1 orphan */
+  .membership-grid{
+    grid-template-columns:1fr;
+    gap:24px;
+    max-width:480px;
+  }
+  /* Contact has 3 items — 1-col avoids 2+1 orphan */
+  .contact-grid{
+    grid-template-columns:1fr;
+    gap:24px;
+    max-width:480px;
+  }
+  /* Team detail pages — stack at tablet */
+  .team-detail{
+    grid-template-columns:1fr;
+    gap:24px;
+  }
+  /* Reduce split gap at tablet (content still fits side-by-side) */
+  .split{
+    gap:32px;
+  }
 }
 
 @media (max-width:600px){
@@ -1515,6 +1536,27 @@ a:hover{
     grid-template-columns:1fr;
   }
   .stats-grid{
+    grid-template-columns:1fr;
+    gap:24px;
+  }
+  /* Membership — full width on mobile, tighter padding */
+  .membership-grid{
+    max-width:100%;
+  }
+  .membership-card{
+    padding:28px;
+  }
+  /* Contact — force 1-col, tighter spacing */
+  .contact-grid{
+    grid-template-columns:1fr;
+    gap:20px;
+    max-width:100%;
+  }
+  .contact-card{
+    padding:28px;
+  }
+  /* Split/About — stack and tighten gap */
+  .split{
     grid-template-columns:1fr;
     gap:24px;
   }
