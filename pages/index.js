@@ -3,7 +3,25 @@ import Image from 'next/image'
 import Header from '../components/Header'
 import ScrollReveal from '../components/ScrollReveal'
 
+const PROJECT_INTAKE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfx49YqZRDpIq5sK-U-sA9KUJyoEXfLvVLl904g5L99FtUwtQ/viewform?usp=dialog'
+
 export default function Home({ agathonHighlights = [] }) {
+  const fallbackHighlights = [
+    '/gallery/agathon-2026/_DSC3504.jpg',
+    '/gallery/agathon-2026/_DSC3507.jpg',
+    '/gallery/agathon-2026/_DSC3513.jpg',
+    '/gallery/agathon-2026/_DSC3515.jpg',
+    '/gallery/agathon-2026/_DSC3518.jpg',
+    '/gallery/agathon-2026/_DSC3521.jpg',
+    '/gallery/agathon-2026/_DSC3524.jpg',
+    '/gallery/agathon-2026/_DSC3528.jpg',
+  ].map((src, index) => ({
+    src,
+    title: `Ag-A-thon Moment ${index + 1}`,
+  }))
+
+  const featuredHighlights = (agathonHighlights.length > 0 ? agathonHighlights : fallbackHighlights).slice(0, 8)
+
   return (
     <>
       <Header />
@@ -27,7 +45,7 @@ export default function Home({ agathonHighlights = [] }) {
           <div className="hero-actions">
             <Link href="/ventures" className="cta primary">Browse Ventures</Link>
             <a href="https://luma.com/exz9fc9w" target="_blank" rel="noopener noreferrer" className="cta secondary">Upcoming Events</a>
-            <a className="cta ghost" href="https://docs.google.com/forms/d/e/1FAIpQLSfx49YqZRDpIq5sK-U-sA9KUJyoEXfLvVLl904g5L99FtUwtQ/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">Join</a>
+            <a href={PROJECT_INTAKE_FORM_URL} target="_blank" rel="noopener noreferrer" className="cta ghost">Apply for projects</a>
           </div>
         </div>
       </section>
@@ -116,7 +134,7 @@ export default function Home({ agathonHighlights = [] }) {
               </ScrollReveal>
             </div>
             <div className="membership-cta">
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLSfx49YqZRDpIq5sK-U-sA9KUJyoEXfLvVLl904g5L99FtUwtQ/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" className="button">Apply to Join</a>
+              <a href={PROJECT_INTAKE_FORM_URL} target="_blank" rel="noopener noreferrer" className="button">Apply for projects</a>
             </div>
           </div>
         </section>
@@ -124,24 +142,26 @@ export default function Home({ agathonHighlights = [] }) {
         <section id="gallery" className="section alt container">
           <ScrollReveal>
             <div>
-              <h2>Ag-A-thon 2026 Highlights</h2>
+              <h2>Ag-A-thon 2026 Picture Highlights</h2>
+              <p className="muted">A featured set from the album, shown here so the images are always visible on the homepage.</p>
             </div>
           </ScrollReveal>
-          <div className="highlights-marquee-wrap">
-            {agathonHighlights.length === 0 ? (
-              <div className="empty-state">
-                <h3>Photos Coming Soon</h3>
-                <p>Ag-A-thon highlights will appear here soon.</p>
+          <div className="highlights-marquee-wrap featured-highlights-grid" aria-label="Ag-A-thon 2026 photo highlights">
+            {featuredHighlights.map((img, index) => (
+              <div className="highlight-card featured-highlight-card" key={img.src}>
+                <Image
+                  src={img.src}
+                  alt={img.title}
+                  fill
+                  priority={index < 2}
+                  sizes="(max-width: 900px) 100vw, 25vw"
+                  style={{ objectFit: 'cover' }}
+                />
+                <div className="highlight-overlay">
+                  <span>Ag-A-thon 2026</span>
+                </div>
               </div>
-            ) : (
-              <div className="highlights-marquee-track" aria-label="Ag-A-thon 2026 photo strip">
-                {agathonHighlights.map((img) => (
-                  <div className="highlight-card" key={img.src}>
-                    <img src={img.src} alt={img.title} loading="lazy" />
-                  </div>
-                ))}
-              </div>
-            )}
+            ))}
           </div>
         </section>
 

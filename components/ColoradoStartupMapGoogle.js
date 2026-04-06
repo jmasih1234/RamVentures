@@ -182,6 +182,11 @@ export default function ColoradoStartupMapGoogle() {
     }
 
     let disposed = false;
+    const fallbackTimeout = setTimeout(() => {
+      if (!disposed && (!window.google || !window.google.maps)) {
+        setUseFallbackMap(true);
+      }
+    }, 3500);
 
     window.gm_authFailure = () => {
       setMapError('Google Maps authentication failed. Check API key restrictions (allow http://localhost:3000/*), enable Maps JavaScript API, and ensure billing is active.');
@@ -234,6 +239,7 @@ export default function ColoradoStartupMapGoogle() {
 
     return () => {
       disposed = true;
+      clearTimeout(fallbackTimeout);
       markersRef.current.forEach(({ marker }) => marker.setMap(null));
       markersRef.current = [];
       if (window.gm_authFailure) {

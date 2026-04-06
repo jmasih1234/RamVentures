@@ -45,37 +45,56 @@ async function sendVentureNotification(venture) {
 }
 
 export default async function handler(req, res){
-  if (req.method === 'POST'){
-    const body = req.body || {}
-    const name = typeof body.name === 'string' ? body.name.trim() : ''
-    const description = typeof body.description === 'string' ? body.description.trim() : ''
-    const contact_email = typeof body.contact_email === 'string' ? body.contact_email.trim() : ''
+  const hasSupabaseConfig = Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  )
 
-    if (!name || !description || !contact_email) {
-      return res.status(400).json({ error: 'Name, description, and contact email are required.' })
+  try {
+    if (req.method === 'POST'){
+      const body = req.body || {}
+      const name = typeof body.name === 'string' ? body.name.trim() : ''
+      const description = typeof body.description === 'string' ? body.description.trim() : ''
+      const contact_email = typeof body.contact_email === 'string' ? body.contact_email.trim() : ''
+
+      if (!name || !description || !contact_email) {
+        return res.status(400).json({ error: 'Name, description, and contact email are required.' })
+      }
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailPattern.test(contact_email)) {
+        return res.status(400).json({ error: 'Please provide a valid contact email.' })
+      }
+
+      if (!hasSupabaseConfig) {
+        return res.status(500).json({
+          error: 'Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to environment settings.'
+        })
+      }
+
+      const payload = {
+        name,
+        description,
+        contact_email
+      }
+
+      const { data, error } = await supabase.from('ventures').insert([payload])
+      if (error) return res.status(500).json({ error: error.message })
+
+      let notification = { sent: false, reason: 'unknown' }
+      try {
+        notification = await sendVentureNotification(payload)
+      } catch {
+        notification = { sent: false, reason: 'email_send_failed' }
+      }
+
+      return res.status(200).json({
+        message: 'Venture registered',
+        data,
+        notification
+      })
     }
-
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailPattern.test(contact_email)) {
-      return res.status(400).json({ error: 'Please provide a valid contact email.' })
-    }
-
-    const payload = {
-      name,
-      description,
-      contact_email
-    }
-
-    const { data, error } = await supabase.from('ventures').insert([payload])
-    if (error) return res.status(500).json({ error: error.message })
-
-    const notification = await sendVentureNotification(payload)
-
-    return res.status(200).json({
-      message: 'Venture registered',
-      data,
-      notification
-    })
+    return res.status(405).json({ error: 'Method not allowed' })
+  } catch (error) {
+    return res.status(500).json({ error: error?.message || 'Internal Server Error' })
   }
-  res.status(405).json({ error: 'Method not allowed' })
 }

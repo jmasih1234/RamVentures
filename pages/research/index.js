@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import Header from '../../components/Header'
 
+const PROJECT_INTAKE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfx49YqZRDpIq5sK-U-sA9KUJyoEXfLvVLl904g5L99FtUwtQ/viewform?usp=dialog'
+
 export default function Research() {
   return (
     <>
@@ -45,7 +47,7 @@ export default function Research() {
           <h2>Get Involved</h2>
           <p>Interested in leading or contributing to a research project? Connect with us to learn more opportunities.</p>
           <div style={{marginTop:32, textAlign:'center'}}>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfx49YqZRDpIq5sK-U-sA9KUJyoEXfLvVLl904g5L99FtUwtQ/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" className="button">Join Our Community</a>
+            <a href={PROJECT_INTAKE_FORM_URL} target="_blank" rel="noopener noreferrer" className="button">Apply for projects</a>
           </div>
         </section>
       </main>

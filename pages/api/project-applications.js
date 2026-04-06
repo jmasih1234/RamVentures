@@ -16,7 +16,9 @@ async function sendApplicationNotification(application) {
   const pass = process.env.SMTP_PASS
   const notifyTo = process.env.VENTURE_NOTIFY_EMAIL || 'ramventure@gmail.com'
 
-  if (!host || !user || !pass || !notifyTo) return
+  if (!host || !user || !pass || !notifyTo) {
+    return { sent: false, reason: 'smtp_not_configured', notifyTo }
+  }
 
   const transporter = nodemailer.createTransport({
     host,
@@ -47,6 +49,8 @@ async function sendApplicationNotification(application) {
       application.relevant_experience || 'N/A'
     ].join('\n')
   })
+
+  return { sent: true, reason: 'sent', notifyTo }
 }
 
 export default async function handler(req, res) {
@@ -55,12 +59,6 @@ export default async function handler(req, res) {
   )
 
   try {
-    if (!hasSupabaseConfig) {
-      return res.status(500).json({
-        error: 'Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to environment settings.'
-      })
-    }
-
     if (req.method === 'POST') {
       const body = req.body || {}
 
@@ -93,19 +91,44 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Please provide a valid email.' })
     }
 
-      const { data, error } = await supabase.from('project_applications').insert([payload]).select('*').single()
-      if (error) return res.status(500).json({ error: error.message })
-
-      try {
-        await sendApplicationNotification(payload)
-      } catch {
-        // Non-blocking notification failure.
+      let insertedRow = null
+      if (hasSupabaseConfig) {
+        const { data, error } = await supabase
+          .from('project_applications')
+          .insert([payload])
+          .select('*')
+          .single()
+        if (error) return res.status(500).json({ error: error.message })
+        insertedRow = data
       }
 
-      return res.status(200).json({ message: 'Application submitted successfully.', data })
+      let notification = { sent: false, reason: 'unknown', notifyTo: process.env.VENTURE_NOTIFY_EMAIL || 'ramventure@gmail.com' }
+      try {
+        notification = await sendApplicationNotification(payload)
+      } catch {
+        notification = {
+          sent: false,
+          reason: 'smtp_send_failed',
+          notifyTo: process.env.VENTURE_NOTIFY_EMAIL || 'ramventure@gmail.com'
+        }
+      }
+
+      return res.status(200).json({
+        message: hasSupabaseConfig
+          ? 'Application submitted successfully.'
+          : 'Application submitted successfully. Supabase is not configured, so this submission was not stored in the dashboard database.',
+        data: insertedRow,
+        notification
+      })
     }
 
     if (req.method === 'GET') {
+      if (!hasSupabaseConfig) {
+        return res.status(500).json({
+          error: 'Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to environment settings.'
+        })
+      }
+
       const { data, error } = await supabase
         .from('project_applications')
         .select('*')
@@ -117,6 +140,12 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'PATCH') {
+      if (!hasSupabaseConfig) {
+        return res.status(500).json({
+          error: 'Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to environment settings.'
+        })
+      }
+
       const id = normalizeText(req.body?.id)
       const status = normalizeText(req.body?.status)
       const admin_response = normalizeText(req.body?.admin_response)

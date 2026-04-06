@@ -6,7 +6,7 @@ import Header from '../../components/Header'
 import ScrollReveal from '../../components/ScrollReveal'
 
 const APPLY_URL =
-  'https://docs.google.com/forms/d/e/1FAIpQLSfx49YqZRDpIq5sK-U-sA9KUJyoEXfLvVLl904g5L99FtUwtQ/viewform'
+  '/sprint'
 const DEADLINE = new Date('2026-04-05T23:59:59')
 
 function useCountdown() {
@@ -211,8 +211,12 @@ export default function SprintPage() {
 
       if (!res.ok) throw new Error(data?.error || 'Failed to submit application.')
 
+      const notificationText = data?.notification?.sent
+        ? ` Email sent to ${data.notification.notifyTo}.`
+        : ' Email was not sent yet (SMTP not configured).'
+
       setIsError(false)
-      setMessage(data?.message || 'Application submitted successfully.')
+      setMessage((data?.message || 'Application submitted successfully.') + notificationText)
       setForm({
         full_name: '', email: '', phone: '', major: '', graduation_year: '', linkedin_url: '',
         role_interest: '', why_interested: '', relevant_experience: '', weekly_hours: '',

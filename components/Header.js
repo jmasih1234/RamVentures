@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 
+const PROJECT_INTAKE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfx49YqZRDpIq5sK-U-sA9KUJyoEXfLvVLl904g5L99FtUwtQ/viewform?usp=dialog'
+
 export default function Header(){
   const ref = useRef()
   const [isScrolled, setIsScrolled] = useState(false)
@@ -39,7 +41,7 @@ export default function Header(){
         <Link href="/events" className="nav-item">Events</Link>
         <Link href="/gallery" className="nav-item">Gallery</Link>
         <Link href="/admin" className="nav-item">Membership</Link>
-        <Link href="/sprint" className="nav-item nav-apply">Apply for projects</Link>
+        <a href={PROJECT_INTAKE_FORM_URL} target="_blank" rel="noopener noreferrer" className="nav-item nav-apply">Apply for projects</a>
       </nav>
     </header>
   )
