@@ -1,50 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Header from '../../components/Header'
 import ScrollReveal from '../../components/ScrollReveal'
+
+const PROJECT_INTAKE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfx49YqZRDpIq5sK-U-sA9KUJyoEXfLvVLl904g5L99FtUwtQ/viewform?usp=dialog'
 
 export default function Membership() {
   const [venture, setVenture] = useState({ name: '', description: '', contact_email: '' })
   const [msg, setMsg] = useState('')
   const [isError, setIsError] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [applications, setApplications] = useState([])
-  const [loadingApplications, setLoadingApplications] = useState(true)
-
-  useEffect(() => {
-    loadApplications()
-  }, [])
-
-  async function loadApplications() {
-    setLoadingApplications(true)
-    try {
-      const res = await fetch('/api/project-applications')
-      const data = await res.json()
-      if (!res.ok) throw new Error(data?.error || 'Failed to load applications.')
-      setApplications(data?.data || [])
-    } catch {
-      setApplications([])
-    } finally {
-      setLoadingApplications(false)
-    }
-  }
-
-  async function updateApplication(id, status, admin_response) {
-    try {
-      const res = await fetch('/api/project-applications', {
-        method: 'PATCH',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ id, status, admin_response })
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data?.error || 'Failed to update application.')
-
-      setApplications(prev => prev.map((item) => (
-        item.id === id ? data.data : item
-      )))
-    } catch {
-      // Keep UI stable even if update fails.
-    }
-  }
 
   async function submitVenture(e) {
     e.preventDefault()
@@ -57,8 +21,16 @@ export default function Membership() {
         body: JSON.stringify(venture)
       })
 
-      const data = await res.json()
-      if (!res.ok) throw new Error(data?.message || 'Failed to register venture')
+      let data = null
+      try {
+        data = await res.json()
+      } catch {
+        data = null
+      }
+
+      if (!res.ok) {
+        throw new Error(data?.error || data?.message || 'Failed to register venture')
+      }
 
       setMsg(data.message || 'Venture registered successfully.')
       setIsError(false)
@@ -141,66 +113,15 @@ export default function Membership() {
                   Complete the official membership form to join the Ram Ventures community.
                 </p>
                 <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSfx49YqZRDpIq5sK-U-sA9KUJyoEXfLvVLl904g5L99FtUwtQ/viewform?usp=dialog"
+                  href={PROJECT_INTAKE_FORM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="membership-button"
                 >
-                  Open Membership Form
+                  Open Project Intake Form
                 </a>
               </div>
             </ScrollReveal>
-          </div>
-
-          <div style={{ marginTop: 24 }}>
-            <div className="membership-card-admin">
-              <h2>Project Intake Responses</h2>
-              <p className="membership-copy">Review applications and add your response directly in the dashboard.</p>
-
-              {loadingApplications ? (
-                <p className="membership-copy">Loading applications…</p>
-              ) : applications.length === 0 ? (
-                <p className="membership-copy">No applications yet.</p>
-              ) : (
-                <div className="apps-list">
-                  {applications.map((app) => (
-                    <div key={app.id} className="app-item">
-                      <div className="app-header">
-                        <div>
-                          <h3>{app.full_name || 'Unnamed applicant'}</h3>
-                          <p className="membership-copy" style={{ margin: 0 }}>{app.email}</p>
-                        </div>
-                        <select
-                          value={app.status || 'new'}
-                          onChange={(e) => updateApplication(app.id, e.target.value, app.admin_response || '')}
-                        >
-                          <option value="new">New</option>
-                          <option value="reviewing">Reviewing</option>
-                          <option value="accepted">Accepted</option>
-                          <option value="waitlisted">Waitlisted</option>
-                          <option value="declined">Declined</option>
-                        </select>
-                      </div>
-
-                      <p><strong>Role Interest:</strong> {app.role_interest || 'N/A'}</p>
-                      <p><strong>Major:</strong> {app.major || 'N/A'} {app.graduation_year ? `(${app.graduation_year})` : ''}</p>
-                      <p><strong>Why Interested:</strong> {app.why_interested || 'N/A'}</p>
-
-                      <label htmlFor={`response-${app.id}`}>Admin Response</label>
-                      <textarea
-                        id={`response-${app.id}`}
-                        rows={3}
-                        value={app.admin_response || ''}
-                        onChange={(e) => setApplications(prev => prev.map((item) => item.id === app.id ? { ...item, admin_response: e.target.value } : item))}
-                      />
-                      <button type="button" onClick={() => updateApplication(app.id, app.status || 'new', app.admin_response || '')}>
-                        Save Response
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
           </div>
         </section>
       </main>
